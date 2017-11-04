@@ -36,12 +36,12 @@ public class Game extends JFrame
 	   userField = new ArrayList<Container>();
 	   
 	   for(int i = 0; i < 2; i++) {
-		   Container c = new Container();
+		   FieldContainer c = new FieldContainer();
 		   userField.add(c);
 		   battleField.add(c);
 	   }
 	   for(int i = 0; i < 2; i++) {
-		   Container c = new Container();
+		   FieldContainer c = new FieldContainer();
 		   opponentField.add(c);
 		   battleField.add(c);
 	   }
