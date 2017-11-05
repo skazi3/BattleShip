@@ -17,14 +17,14 @@ public class Game extends JFrame
    {
       super( "BattleField" );
      
-
+      setJMenuBar(MenuBar());
       container = getContentPane();
       container.setLayout (new BorderLayout());
       
       //west panel should have something else (???)
-      container.add(makeGrids(), BorderLayout.EAST);
+      container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.white);
-      setJMenuBar(MenuBar());
+     
       setSize( 650, 600);
       setVisible( true );
 
@@ -37,16 +37,15 @@ public class Game extends JFrame
 	   userField = new ArrayList<Container>();
 	   opponentField = new ArrayList<Container>();
 	   
-	   for(int i = 0; i < 2; i++) {
+	   for(int i = 0; i < 4; i++) {
 		   FieldContainer c = new FieldContainer();
-		   userField.add(c.getContainer());
+		   if(i % 2 == 0)
+			   userField.add(c.getContainer());
+		   else
+			   opponentField.add(c.getContainer());
 		   battleField.add(c);
 	   }
-	   for(int i = 0; i < 2; i++) {
-		   FieldContainer c = new FieldContainer();
-		   opponentField.add(c.getContainer());
-		   battleField.add(c);
-	   }
+	
 
 	   
 	   return battleField;
@@ -54,24 +53,33 @@ public class Game extends JFrame
    }
    //adds menu bar functions
    private JMenuBar MenuBar() {
-	   JMenuBar mb = new JMenuBar();
-	   
-	   JMenu exit = new JMenu("Exit");
-	   JMenu about = new JMenu("About");
+	   JMenuBar menuBar = new JMenuBar();
+	   //JMenu stuff
+	   JMenu file = new JMenu("File");
 	   JMenu help = new JMenu("Help");
 	   JMenu connect = new JMenu("Connect");
 	   
+	   //menu item stuff
+	   JMenuItem about = new JMenuItem("About");
+	   JMenuItem exit = new JMenuItem("Exit");
+	   
+	   //action listener stuff
 	   exit.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
 			   dispose();
 		   }
 	   });
-	   mb.add(exit);
-	   mb.add(about);
-	   mb.add(help);
-	   mb.add(connect);
 	   
-	   return mb;
+	   //add to menu stuff
+	   file.add(exit); 
+	   file.add(about);
+	   
+	   //add to menubar stuff
+	   menuBar.add(file);
+	   menuBar.add(help);
+	   menuBar.add(connect);
+	   
+	   return menuBar;
    }
    //begin main
    public static void main( String args[] )
