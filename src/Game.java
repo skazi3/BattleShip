@@ -62,10 +62,12 @@ public class Game extends JFrame
 	   JMenu file = new JMenu("File");
 	   JMenu help = new JMenu("Help");
 	   JMenu connect = new JMenu("Connect");
+	   JMenu ships =  new JMenu("Ships");
 	   
 	   //menu item stuff
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
+	  
 	   
 	   //action listener stuff
 	   exit.addActionListener(new ActionListener() {
@@ -81,7 +83,9 @@ public class Game extends JFrame
 	   //add to menubar stuff
 	   menuBar.add(file);
 	   menuBar.add(help);
+	   menuBar.add(ships);
 	   menuBar.add(connect);
+	   
 	   
 	   return menuBar;
    }
