@@ -67,7 +67,7 @@ public class Game extends JFrame
 	   //menu item stuff
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
-	  
+	   
 	   
 	   //action listener stuff
 	   exit.addActionListener(new ActionListener() {
