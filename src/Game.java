@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class Game extends JFrame
 {  
-	//four grids
+	//2 user Grids and 2 opponent grids
 	private ArrayList<Container> userField;
 	private ArrayList<Container> opponentField;
 	private Container container;
@@ -17,19 +17,21 @@ public class Game extends JFrame
    {
       super( "BattleField" );
      
-      // get content pane and set its layout
+
       container = getContentPane();
       container.setLayout (new BorderLayout());
       
-      
-      container.add(makeGrids(), BorderLayout.WEST);
+      //west panel should have something else (???)
+      container.add(makeGrids(), BorderLayout.EAST);
       container.setBackground(Color.white);
-      
-      setSize( 650, 580);
+      setJMenuBar(MenuBar());
+      setSize( 650, 600);
       setVisible( true );
 
    } // end constructor
-   public Container makeGrids() {
+   
+   //creates four 10x10 grids with row/col identifiers
+   private Container makeGrids() {
 	   Container battleField = new Container();
 	   battleField.setLayout(new GridLayout(2, 2, 4, 4));
 	   userField = new ArrayList<Container>();
@@ -50,6 +52,22 @@ public class Game extends JFrame
 	   return battleField;
 	   
    }
+   private JMenuBar MenuBar() {
+	   JMenuBar mb = new JMenuBar();
+	   
+	   JMenu exit = new JMenu("Exit");
+	   JMenu about = new JMenu("About");
+	   JMenu help = new JMenu("Help");
+	   JMenu connect = new JMenu("Connect");
+	   
+	   mb.add(exit);
+	   mb.add(about);
+	   mb.add(help);
+	   mb.add(connect);
+	   
+	   return mb;
+   }
+   //begin main
    public static void main( String args[] )
    { 
       Game application = new Game();
