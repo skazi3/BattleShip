@@ -23,10 +23,9 @@ public class Game extends JFrame
       
       
       container.add(makeGrids(), BorderLayout.WEST);
+      container.setBackground(Color.white);
       
-      
-     
-      setSize( 650, 650 );
+      setSize( 650, 580);
       setVisible( true );
 
    } // end constructor
