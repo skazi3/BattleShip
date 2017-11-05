@@ -19,8 +19,19 @@ public class Game extends JFrame
       super( "BattleField" );
      
       setJMenuBar(MenuBar());
+      JPanel statusBar = new JPanel();
+      JLabel status = new JLabel();
+     
+      
       container = getContentPane();
       container.setLayout (new BorderLayout());
+      
+      statusBar.setLayout(new BorderLayout());
+      statusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+      statusBar.setBackground(Color.LIGHT_GRAY);
+      status.setText("Status: ");
+      statusBar.add(status, BorderLayout.WEST);
+      add("South", statusBar);
       
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
@@ -29,7 +40,7 @@ public class Game extends JFrame
       Player opponent = new Player(opponentPlayer);
       
      
-      setSize( 650, 600);
+      setSize( 650, 630);
       setVisible( true );
 
    } // end constructor
@@ -109,6 +120,7 @@ public class Game extends JFrame
 	   
 	   return menuBar;
    }
+   
    //begin main
    public static void main( String args[] )
    { 
