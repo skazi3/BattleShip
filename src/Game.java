@@ -52,6 +52,7 @@ public class Game extends JFrame
 	   return battleField;
 	   
    }
+   //adds menu bar functions
    private JMenuBar MenuBar() {
 	   JMenuBar mb = new JMenuBar();
 	   
@@ -60,6 +61,11 @@ public class Game extends JFrame
 	   JMenu help = new JMenu("Help");
 	   JMenu connect = new JMenu("Connect");
 	   
+	   exit.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   dispose();
+		   }
+	   });
 	   mb.add(exit);
 	   mb.add(about);
 	   mb.add(help);
