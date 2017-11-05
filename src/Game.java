@@ -63,10 +63,12 @@ public class Game extends JFrame
 	   JMenu help = new JMenu("Help");
 	   JMenu connect = new JMenu("Connect");
 	   JMenu ships =  new JMenu("Ships");
+	   JMenu stats = new JMenu("Statistics");
 	   
 	   //menu item stuff
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
+	   JMenuItem statistics = new JMenuItem("View stats");
 	  
 	   //ships item stuff
 	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
@@ -94,11 +96,15 @@ public class Game extends JFrame
 	   ships.add(submarine);
 	   ships.add(patrolBoat);
 	   
+	   //add to stats
+	   stats.add(statistics);
+	   
 	   //add to menubar stuff
 	   menuBar.add(file);
 	   menuBar.add(help);
 	   menuBar.add(ships);
 	   menuBar.add(connect);
+	   menuBar.add(stats);
 	   
 	   
 	   return menuBar;
