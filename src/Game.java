@@ -68,6 +68,7 @@ public class Game extends JFrame
 	   //menu item stuff
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
+
 	   JMenuItem statistics = new JMenuItem("View stats");
 	  
 	   //ships item stuff
@@ -76,8 +77,7 @@ public class Game extends JFrame
 	   JMenuItem destroyer = new JMenuItem("Destroyer: 3");
 	   JMenuItem submarine = new JMenuItem("Submarine: 3");
 	   JMenuItem patrolBoat = new JMenuItem("Patrol Boat: 2");
-	   
-	   
+
 	   //action listener stuff
 	   exit.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
