@@ -26,23 +26,24 @@ public class Game extends JFrame
       
       
      
-      setSize( 500, 250 );
+      setSize( 650, 650 );
       setVisible( true );
 
    } // end constructor
    public Container makeGrids() {
 	   Container battleField = new Container();
-	   battleField.setLayout(new GridLayout(4, 4, 1, 1));
+	   battleField.setLayout(new GridLayout(2, 2, 4, 4));
 	   userField = new ArrayList<Container>();
+	   opponentField = new ArrayList<Container>();
 	   
 	   for(int i = 0; i < 2; i++) {
 		   FieldContainer c = new FieldContainer();
-		   userField.add(c);
+		   userField.add(c.getContainer());
 		   battleField.add(c);
 	   }
 	   for(int i = 0; i < 2; i++) {
 		   FieldContainer c = new FieldContainer();
-		   opponentField.add(c);
+		   opponentField.add(c.getContainer());
 		   battleField.add(c);
 	   }
 
