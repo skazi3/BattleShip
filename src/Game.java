@@ -11,7 +11,8 @@ public class Game extends JFrame
 	private ArrayList<Container> userField;
 	private ArrayList<Container> opponentField;
 	private Container container;
-
+	private int userPlayer = 0;
+	private int opponentPlayer = 1;
    // set up GUI
    public Game()
    {
@@ -24,6 +25,9 @@ public class Game extends JFrame
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.white);
+      Player user = new Player(userPlayer);
+      Player opponent = new Player(opponentPlayer);
+      
      
       setSize( 650, 600);
       setVisible( true );
