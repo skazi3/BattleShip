@@ -24,7 +24,7 @@ public class Game extends JFrame
       
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
-      container.setBackground(Color.white);
+      container.setBackground(Color.LIGHT_GRAY);
       Player user = new Player(userPlayer);
       Player opponent = new Player(opponentPlayer);
       
@@ -68,6 +68,13 @@ public class Game extends JFrame
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
 	  
+	   //ships item stuff
+	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
+	   JMenuItem battleShip = new JMenuItem("battleship: 4");
+	   JMenuItem destroyer = new JMenuItem("Destroyer: 3");
+	   JMenuItem submarine = new JMenuItem("Submarine: 3");
+	   JMenuItem patrolBoat = new JMenuItem("Patrol Boat: 2");
+	   
 	   
 	   //action listener stuff
 	   exit.addActionListener(new ActionListener() {
@@ -79,6 +86,13 @@ public class Game extends JFrame
 	   //add to menu stuff
 	   file.add(exit); 
 	   file.add(about);
+	   
+	   //add to ships stuff
+	   ships.add(aircraftCarrier);
+	   ships.add(battleShip);
+	   ships.add(destroyer);
+	   ships.add(submarine);
+	   ships.add(patrolBoat);
 	   
 	   //add to menubar stuff
 	   menuBar.add(file);
