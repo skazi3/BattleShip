@@ -13,7 +13,6 @@ public class Ship {
 		submarine = 3;
 		patrolBoat = 2;
 		
-		
 	}
 
 	public int getAircraftCarrier() {

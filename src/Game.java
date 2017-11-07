@@ -8,11 +8,12 @@ import javax.swing.*;
 public class Game extends JFrame
 {  
 	//2 user Grids and 2 opponent grids
-	private ArrayList<Container> userField;
-	private ArrayList<Container> opponentField;
+	private ArrayList<FieldContainer> userField;
+	private ArrayList<FieldContainer> opponentField;
 	private Container container;
 	private int userPlayer = 0;
 	private int opponentPlayer = 1;
+	int rounds = 0;
    // set up GUI
    public Game()
    {
@@ -38,19 +39,21 @@ public class Game extends JFrame
       container.setBackground(Color.LIGHT_GRAY);
       Player user = new Player(userPlayer);
       Player opponent = new Player(opponentPlayer);
-      
+      user.setField(userField);
+      opponent.setField(opponentField);
      
       setSize( 650, 630);
       setVisible( true );
 
    } // end constructor
+
    
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
 	   Container battleField = new Container();
 	   battleField.setLayout(new GridLayout(2, 2, 4, 4));
-	   userField = new ArrayList<Container>();
-	   opponentField = new ArrayList<Container>();
+	   userField = new ArrayList<FieldContainer>();
+	   opponentField = new ArrayList<FieldContainer>();
 	   
 	   for(int i = 0; i < 4; i++) {
 		   FieldContainer c = new FieldContainer();
@@ -93,6 +96,13 @@ public class Game extends JFrame
 	   exit.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
 			   dispose();
+		   }
+	   });
+	   
+	   //action listener for ships
+	   aircraftCarrier.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   
 		   }
 	   });
 	   
