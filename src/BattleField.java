@@ -15,6 +15,7 @@ public class BattleField extends JFrame {
 	private Container container;
 	private int userPlayer = 0;
 	private int opponentPlayer = 1;
+	private StatusBar statusBar;
 	int rounds = 0;
    // set up GUI
    public BattleField()
@@ -22,19 +23,14 @@ public class BattleField extends JFrame {
       super( "BattleField" );
      
       setJMenuBar(MenuBar());
-      JPanel statusBar = new JPanel();
-      JLabel status = new JLabel();
+      
      
       
       container = getContentPane();
       container.setLayout (new BorderLayout());
+      statusBar = new StatusBar();
       
-      statusBar.setLayout(new BorderLayout());
-      statusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-      statusBar.setBackground(Color.LIGHT_GRAY);
-      status.setText("Status: ");
-      statusBar.add(status, BorderLayout.WEST);
-      add("South", statusBar);
+      add("South", statusBar.getStatusBar());
       
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
