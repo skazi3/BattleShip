@@ -4,7 +4,7 @@ public class Game {
 	
 	public static void main( String args[] )
 	{ 
-	      BattleField application = new BattleField();
+	      BattleShip application = new BattleShip();
 	      application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 	}
 }

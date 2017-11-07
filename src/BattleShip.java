@@ -7,7 +7,7 @@ import javax.swing.*;
 
 
 
-public class BattleField extends JFrame {
+public class BattleShip extends JFrame {
  
 	//2 user Grids and 2 opponent grids
 	private ArrayList<FieldContainer> userField;
@@ -18,14 +18,12 @@ public class BattleField extends JFrame {
 	private StatusBar statusBar;
 	int rounds = 0;
    // set up GUI
-   public BattleField()
+   public BattleShip()
    {
-      super( "BattleField" );
+      super( "BattleShip" );
      
       setJMenuBar(MenuBar());
-      
-     
-      
+
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
