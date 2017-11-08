@@ -31,9 +31,19 @@ public class FieldContainer extends Container {
 		for(int i = 0; i < 10; i++) {
 			fc.add(new JLabel("   "+ col.get(i)));
 			for(int j = 0; j < 10; j++) {
-				coordinates[i][j] = new JButton(" ");
+				if(i % 2 == j % 2)
+					coordinates[i][j] = new JButton(new ImageIcon(((new ImageIcon(
+				            "images/batt100.gif").getImage()
+				            .getScaledInstance(25, 25,
+				                    java.awt.Image.SCALE_SMOOTH)))));
+				else
+					coordinates[i][j] = new JButton(new ImageIcon(((new ImageIcon(
+				            "images/batt101.gif").getImage()
+				            .getScaledInstance(25, 25,
+				                    java.awt.Image.SCALE_SMOOTH)))));
+					
 				coordinates[i][j].setPreferredSize(new Dimension(25, 25));
-				
+		
 				fc.add(coordinates[i][j]);
 			}
 		}

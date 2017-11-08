@@ -83,7 +83,7 @@ public class BattleShip extends JFrame {
 	  
 	   //ships item stuff
 	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
-	   JMenuItem battleShip = new JMenuItem("battleship: 4");
+	   JMenuItem battleShip = new JMenuItem("Battleship: 4");
 	   JMenuItem destroyer = new JMenuItem("Destroyer: 3");
 	   JMenuItem submarine = new JMenuItem("Submarine: 3");
 	   JMenuItem patrolBoat = new JMenuItem("Patrol Boat: 2");
