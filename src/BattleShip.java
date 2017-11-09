@@ -98,7 +98,8 @@ public class BattleShip extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   
+			   userField.get(1).setShipChosen('A', 5);
+			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
 	   

@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -7,6 +9,8 @@ public class FieldContainer extends Container {
 	private JButton[][] coordinates;
 	private JLabel row = new JLabel("         A      B      C     D     E      F    G     H     I      J ");
 	private ArrayList<String> col;
+	private int shipSize;
+	private int buttonsClicked = 0;
 	
 	public FieldContainer() {
 
@@ -41,7 +45,7 @@ public class FieldContainer extends Container {
 				            "images/batt101.gif").getImage()
 				            .getScaledInstance(25, 25,
 				                    java.awt.Image.SCALE_SMOOTH)))));
-					
+				coordinates[i][j].addActionListener(new PlaceShip(i, j));
 				coordinates[i][j].setPreferredSize(new Dimension(25, 25));
 		
 				fc.add(coordinates[i][j]);
@@ -68,6 +72,30 @@ public class FieldContainer extends Container {
 		case 9: return 'J';
 
 		default: return 'K';
+		}
+		
+	}
+	public void setShipChosen(char name, int size) {
+		shipSize = size;
+	}
+	
+	public class PlaceShip implements ActionListener{
+		private int startX;
+		private int startY;
+		private int directionX;
+		private int directionY;
+
+		public PlaceShip(int i, int j) {
+		
+			
+		}
+		public void actionPerformed(ActionEvent e) {
+			//MAKE MOVE
+			
+			if(buttonsClicked == 0) {
+				//set start position
+			}
+			
 		}
 		
 	}
