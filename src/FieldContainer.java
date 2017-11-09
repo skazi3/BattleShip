@@ -32,12 +32,12 @@ public class FieldContainer extends Container {
 			fc.add(new JLabel("   "+ col.get(i)));
 			for(int j = 0; j < 10; j++) {
 				if(i % 2 == j % 2)
-					coordinates[i][j] = new JButton(new ImageIcon(((new ImageIcon(
+					coordinates[i][j] = new MyButton(getRow(i), j, new ImageIcon(((new ImageIcon(
 				            "images/batt100.gif").getImage()
 				            .getScaledInstance(25, 25,
 				                    java.awt.Image.SCALE_SMOOTH)))));
 				else
-					coordinates[i][j] = new JButton(new ImageIcon(((new ImageIcon(
+					coordinates[i][j] = new MyButton(getRow(i), j, new ImageIcon(((new ImageIcon(
 				            "images/batt101.gif").getImage()
 				            .getScaledInstance(25, 25,
 				                    java.awt.Image.SCALE_SMOOTH)))));
@@ -49,7 +49,26 @@ public class FieldContainer extends Container {
 		}
 		return fc;
 	}
+
 	public FieldContainer getContainer() {
 		return this;
+	}
+	
+	private char getRow(int r) {
+		switch(r) {
+		case 0: return 'A';
+		case 1: return 'B';
+		case 2: return 'C';
+		case 3: return 'D';
+		case 4: return 'E';
+		case 5: return 'F';
+		case 6: return 'G';
+		case 7: return 'H';
+		case 8: return 'I';
+		case 9: return 'J';
+
+		default: return 'K';
+		}
+		
 	}
 }
