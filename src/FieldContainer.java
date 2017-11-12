@@ -11,19 +11,23 @@ public class FieldContainer extends Container {
 	private ArrayList<String> col;
 	private int shipSize = -1;
 	private int buttonCount = 0;
-	private String[] images;
+	private String[] images = {"images/batt1.gif", "images/batt2.gif", "images/batt3.gif",
+			"images/batt4.gif", "images/batt5.gif", "images/batt6.gif", "images/batt7.gif",
+			"images/batt8.gif", "images/batt9.gif", "images/batt10.gif"};
+	private Icon img;
+	private JButton shipImage;
 	private ArrayList<MyButton> ships;
 
-	public FieldContainer() {
+	public FieldContainer(int no) {
 
 		coordinates = new JButton[10][10];
 		initializeCol();
 		setLayout(new BorderLayout());
 		add(row, BorderLayout.NORTH);
 		add(makeField(), BorderLayout.SOUTH);
-		images = new String[10];
-		add(makeShips());
-		setSize(250, 250);
+		if(no == 1)
+			add(makeShips());
+		setSize(260, 280);
 		setVisible(true);
 	}
 	private void initializeCol() {
@@ -38,7 +42,20 @@ public class FieldContainer extends Container {
 		Container c= new Container();
 		c.setLayout(new GridLayout(1, 10, 1, 1));
 		for(int i = 0; i < 10;i++) {
-			ships.add(new MyButton());
+			ships.add(new MyButton(new ImageIcon(((new ImageIcon(
+		            images[i]).getImage()
+		            .getScaledInstance(25, 25,
+		                    java.awt.Image.SCALE_SMOOTH))))));
+			ships.get(i).setPreferredSize(new Dimension(25, 25));
+			ships.get(i).addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					shipImage = (JButton)e.getSource();
+					img = shipImage.getIcon();
+		
+					
+				}
+			});
+			c.add(ships.get(i));
 		}
 		
 		
@@ -69,11 +86,9 @@ public class FieldContainer extends Container {
 					public void actionPerformed(ActionEvent e) {
 						buttonCount++;
 						if(shipSize != -1 && buttonCount <= shipSize) {
-
-							MyButton b = (MyButton) e.getSource();
-							b.setIcon(new ImageIcon(((new ImageIcon(
-								"images/batt3.gif").getImage().getScaledInstance(25, 25,
-								java.awt.Image.SCALE_SMOOTH)))));
+							MyButton b= (MyButton) e.getSource();
+							b = (MyButton) shipImage;
+							b.setIcon(img);
 						}
 					}
 				});

@@ -10,6 +10,9 @@ public class MyButton extends JButton{
 		row = r;
 		col = c+1;
 	}
+	public MyButton(ImageIcon img) {
+		super(img);
+	}
 	
 	public int getRow() {
 		switch(row) {
