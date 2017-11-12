@@ -87,7 +87,6 @@ public class FieldContainer extends Container {
 						buttonCount++;
 						if(shipSize != -1 && buttonCount <= shipSize) {
 							MyButton b= (MyButton) e.getSource();
-							b = (MyButton) shipImage;
 							b.setIcon(img);
 						}
 					}
