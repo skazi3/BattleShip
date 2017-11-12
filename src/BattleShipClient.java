@@ -7,7 +7,7 @@ import javax.swing.*;
 
 
 
-public class BattleShip extends JFrame {
+public class BattleShipClient extends JFrame {
  
 	//2 user Grids and 2 opponent grids
 	private ArrayList<FieldContainer> clientField;
@@ -27,7 +27,7 @@ public class BattleShip extends JFrame {
 	BufferedReader in;
 	int rounds = 0;
    // set up GUI
-   public BattleShip(String p)
+   public BattleShipClient(String p)
    {
       super( "BattleShip " + p );
       player = p;
@@ -125,7 +125,7 @@ public class BattleShip extends JFrame {
 	   });
 	   
 	   //actionlistener for connect
-	   connection.addActionListener(new ConnectionListener(this, player));
+	  
 	   
 	   //add to menu stuff
 	   file.add(about);
@@ -136,7 +136,7 @@ public class BattleShip extends JFrame {
 
                    // display message dialog when user selects About...
                    public void actionPerformed(ActionEvent event) {
-                       JOptionPane.showMessageDialog(BattleShip.this,
+                       JOptionPane.showMessageDialog(BattleShipClient.this,
                                "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather\nProject 4 - BattleShip\nCS 342",
                                "About", JOptionPane.PLAIN_MESSAGE);
                    }
@@ -153,7 +153,7 @@ public class BattleShip extends JFrame {
 
                    // display message dialog when user selects About...
                    public void actionPerformed(ActionEvent event) {
-                       JOptionPane.showMessageDialog(BattleShip.this,
+                       JOptionPane.showMessageDialog(BattleShipClient.this,
                                "1. First connect the server and client to play against opponent.\n" +
                                        "2. Place all the ships on bottom side of the board\n" +
                                        "3. Take turns attacking your opponent using the top side of the board.\n"+
@@ -191,120 +191,4 @@ public class BattleShip extends JFrame {
    }
 	   
 }
-class ConnectionListener implements ActionListener{
-	BattleShip battleShip;
-	String player;
-	public ConnectionListener(BattleShip bs, String p) {
-		battleShip = bs;
-		player = p;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(player == "Server")
-			new ConnectionThread (battleShip);
-		
-	}
-	
-}
-class ConnectionThread extends Thread{
-	BattleShip gui;
-	   
-   public ConnectionThread (BattleShip es3)
-   {
-     gui = es3;
-     start();
-   }
-   
-   public void run()
-   {
-     gui.serverContinue = true;
-     
-     try 
-     { 
-       gui.serverSocket = new ServerSocket(0); 
-       
-       System.out.println ("Connection Socket Created");
-       try { 
-         while (gui.serverContinue)
-         {
-           System.out.println ("Waiting for Connection");
-           
-           new CommunicationThread (gui.serverSocket.accept(), gui); 
-         }
-       } 
-       catch (IOException e) 
-       { 
-         System.err.println("Accept failed."); 
-         System.exit(1); 
-       } 
-     } 
-     catch (IOException e) 
-     { 
-       System.err.println("Could not listen on port: 10008."); 
-       System.exit(1); 
-     } 
-     finally
-     {
-       try {
-         gui.serverSocket.close(); 
-       }
-       catch (IOException e)
-       { 
-         System.err.println("Could not close port: 10008."); 
-         System.exit(1); 
-       } 
-     }
-   }
-}
-
-class CommunicationThread extends Thread
-{ 
- //private boolean serverContinue = true;
- private Socket clientSocket;
- private BattleShip gui;
-
-
-
- public CommunicationThread (Socket clientSoc, BattleShip ec3)
-   {
-    clientSocket = clientSoc;
-    gui = ec3;  
-    start();
-   }
-
- public void run()
-   {
-    System.out.println ("New Communication Thread Started");
-
-    try { 
-         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
-                                      true); 
-         BufferedReader in = new BufferedReader( 
-                 new InputStreamReader( clientSocket.getInputStream())); 
-
-         String inputLine; 
-
-         while ((inputLine = in.readLine()) != null) 
-             { 
-              System.out.println ("Server: " + inputLine); 
-              out.println(inputLine); 
-
-              if (inputLine.equals("Bye.")) 
-                  break; 
-
-              if (inputLine.equals("End Server.")) 
-                  gui.serverContinue = false; 
-             } 
-
-         out.close(); 
-         in.close(); 
-         clientSocket.close(); 
-        } 
-    catch (IOException e) 
-        { 
-         System.err.println("Problem with Communication Server");
-         //System.exit(1); 
-        } 
-    }
-} 
 
