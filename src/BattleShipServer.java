@@ -7,20 +7,27 @@ import javax.swing.*;
 
 
 
-public class BattleShip extends JFrame {
+public class BattleShipServer extends JFrame {
  
 	//2 user Grids and 2 opponent grids
-	private ArrayList<FieldContainer> userField;
-	private ArrayList<FieldContainer> opponentField;
+	private ArrayList<FieldContainer> serverField;
+
 	private Container container;
-	private int userPlayer = 0;
-	private int opponentPlayer = 1;
+	private int serverPlayer = 0;
+
 	private StatusBar statusBar;
+	private boolean running;
+	
+	  // Network Items
+	boolean serverContinue;
+	ServerSocket serverSocket;
+	PrintWriter out;
+	BufferedReader in;
 	int rounds = 0;
    // set up GUI
-   public BattleShip()
+   public BattleShipServer()
    {
-      super( "BattleShip" );
+      super( "BattleShip Server" );
      
       setJMenuBar(MenuBar());
 
@@ -33,30 +40,40 @@ public class BattleShip extends JFrame {
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      Player user = new Player(userPlayer);
-      Player opponent = new Player(opponentPlayer);
-      user.setField(userField);
-      opponent.setField(opponentField);
+      Player server = new Player(serverPlayer);
+
+      server.setField(serverField);
+      String machineAddress = null;
+      try
+      {  
+        InetAddress addr = InetAddress.getLocalHost();
+        machineAddress = addr.getHostAddress();
+      }
+      catch (UnknownHostException e)
+      {
+        machineAddress = "127.0.0.1";
+      }
      
-      setSize( 650, 630);
+      setSize( 325, 630);
       setVisible( true );
 
    } // end constructor
 
-   
+   public static void main( String args[] )
+	{ 
+	   BattleShipServer bsServer = new BattleShipServer();
+	   bsServer.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	}
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
 	   Container battleField = new Container();
-	   battleField.setLayout(new GridLayout(2, 2, 4, 4));
-	   userField = new ArrayList<FieldContainer>();
-	   opponentField = new ArrayList<FieldContainer>();
+	   battleField.setLayout(new GridLayout(2, 1, 4, 4));
+	   serverField = new ArrayList<FieldContainer>();
+
 	   
-	   for(int i = 0; i < 4; i++) {
+	   for(int i = 0; i < 2; i++) {
 		   FieldContainer c = new FieldContainer();
-		   if(i % 2 == 0)
-			   userField.add(c.getContainer());
-		   else
-			   opponentField.add(c.getContainer());
+		   serverField.add(c.getContainer());
 		   battleField.add(c);
 	   }
 	
@@ -98,7 +115,7 @@ public class BattleShip extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   userField.get(1).setShipChosen('A', 5);
+			   serverField.get(1).setShipChosen('A', 5);
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
