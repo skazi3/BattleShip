@@ -45,7 +45,7 @@ public class BattleShipClient extends JFrame {
       client.setField(clientField);
 
      
-      setSize( 325, 630);
+      setSize( 325, 650);
       setVisible( true );
 
    } // end constructor

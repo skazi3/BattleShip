@@ -9,9 +9,11 @@ public class FieldContainer extends Container {
 	private JButton[][] coordinates;
 	private JLabel row = new JLabel("         A      B      C     D     E      F    G     H     I      J ");
 	private ArrayList<String> col;
-	private int shipSize;
-	private int buttonsClicked = 0;
-	
+	private int shipSize = -1;
+	private int buttonCount = 0;
+	private String[] images;
+	private ArrayList<MyButton> ships;
+
 	public FieldContainer() {
 
 		coordinates = new JButton[10][10];
@@ -19,7 +21,8 @@ public class FieldContainer extends Container {
 		setLayout(new BorderLayout());
 		add(row, BorderLayout.NORTH);
 		add(makeField(), BorderLayout.SOUTH);
-
+		images = new String[10];
+		add(makeShips());
 		setSize(250, 250);
 		setVisible(true);
 	}
@@ -29,12 +32,26 @@ public class FieldContainer extends Container {
 			col.add(Integer.toString(i));
 		}
 	}
+	
+	private Container makeShips() {
+		ships = new ArrayList<MyButton>();
+		Container c= new Container();
+		c.setLayout(new GridLayout(1, 10, 1, 1));
+		for(int i = 0; i < 10;i++) {
+			ships.add(new MyButton());
+		}
+		
+		
+		return c;
+	}
+
 	private Container makeField() {
 		Container fc = new Container();
 		fc.setLayout(new GridLayout(10, 11, 1, 1));
 		for(int i = 0; i < 10; i++) {
 			fc.add(new JLabel("   "+ col.get(i)));
 			for(int j = 0; j < 10; j++) {
+/*---------------------makes checkerboard buttons----------------------------------------------------------*/
 				if(i % 2 == j % 2)
 					coordinates[i][j] = new MyButton(getRow(i), j, new ImageIcon(((new ImageIcon(
 				            "images/batt100.gif").getImage()
@@ -45,9 +62,24 @@ public class FieldContainer extends Container {
 				            "images/batt101.gif").getImage()
 				            .getScaledInstance(25, 25,
 				                    java.awt.Image.SCALE_SMOOTH)))));
-				coordinates[i][j].addActionListener(new PlaceShip(i, j));
+/*---------------------end checkerboard buttons----------------------------------------------------------*/
+				
+/*---------------------makes actionlistener--------------------------------------------------------------*/
+				coordinates[i][j].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						buttonCount++;
+						if(shipSize != -1 && buttonCount <= shipSize) {
+
+							MyButton b = (MyButton) e.getSource();
+							b.setIcon(new ImageIcon(((new ImageIcon(
+								"images/batt3.gif").getImage().getScaledInstance(25, 25,
+								java.awt.Image.SCALE_SMOOTH)))));
+						}
+					}
+				});
+/*---------------------end actionlistener----------------------------------------------------------------*/
+				
 				coordinates[i][j].setPreferredSize(new Dimension(25, 25));
-		
 				fc.add(coordinates[i][j]);
 			}
 		}
@@ -76,27 +108,9 @@ public class FieldContainer extends Container {
 		
 	}
 	public void setShipChosen(char name, int size) {
+		
 		shipSize = size;
 	}
 	
-	public class PlaceShip implements ActionListener{
-		private int startX;
-		private int startY;
-		private int directionX;
-		private int directionY;
 
-		public PlaceShip(int i, int j) {
-		
-			
-		}
-		public void actionPerformed(ActionEvent e) {
-			//MAKE MOVE
-			
-			if(buttonsClicked == 0) {
-				//set start position
-			}
-			
-		}
-		
-	}
 }
