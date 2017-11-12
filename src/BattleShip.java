@@ -7,14 +7,14 @@ import javax.swing.*;
 
 
 
-public class BattleShipClient extends JFrame {
+public class BattleShip extends JFrame {
  
 	//2 user Grids and 2 opponent grids
 	private ArrayList<FieldContainer> clientField;
 
 	private Container container;
 	private int clientPlayer = 0;
-
+	private String player;
 	private StatusBar statusBar;
 	boolean connected;
 	Socket echoSocket;
@@ -22,12 +22,12 @@ public class BattleShipClient extends JFrame {
 	BufferedReader in;
 	int rounds = 0;
    // set up GUI
-   public BattleShipClient()
+   public BattleShip(String p)
    {
-      super( "BattleShip Client" );
-     
+      super( "BattleShip " + p );
+      player = p;
       setJMenuBar(MenuBar());
-
+      
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
@@ -47,11 +47,6 @@ public class BattleShipClient extends JFrame {
 
    } // end constructor
 
-   public static void main( String args[] )
-	{ 
-	      BattleShipClient bsClient = new BattleShipClient();
-	      bsClient.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-	}
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
 	   Container battleField = new Container();
