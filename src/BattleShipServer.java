@@ -30,7 +30,7 @@ public class BattleShipServer extends JFrame {
       super( "BattleShip Server" );
      
       setJMenuBar(MenuBar());
-
+      running = false;
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
@@ -98,6 +98,8 @@ public class BattleShipServer extends JFrame {
 
 	   JMenuItem statistics = new JMenuItem("View stats");
 	  
+	   JMenuItem startConnection = new JMenuItem("Start Connection");
+	   
 	   //ships item stuff
 	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
 	   JMenuItem battleShip = new JMenuItem("Battleship: 4");
@@ -112,6 +114,9 @@ public class BattleShipServer extends JFrame {
 		   }
 	   });
 	   
+	   
+
+	   
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
@@ -123,6 +128,8 @@ public class BattleShipServer extends JFrame {
 	   //add to menu stuff
 	   file.add(exit); 
 	   file.add(about);
+	   
+	   connect.add(startConnection);
 	   
 	   //add to ships stuff
 	   ships.add(aircraftCarrier);
@@ -146,3 +153,8 @@ public class BattleShipServer extends JFrame {
    }
 	   
 }
+
+
+
+
+
