@@ -13,7 +13,6 @@ public class BattleShip extends JFrame {
 	private ArrayList<FieldContainer> clientField;
 
 	private Container container;
-	private int clientPlayer = 0;
 	private String player;
 	private StatusBar statusBar;
 	boolean connected;
@@ -28,6 +27,17 @@ public class BattleShip extends JFrame {
       player = p;
       setJMenuBar(MenuBar());
       
+      String machineAddress = null;
+      try
+      {  
+        InetAddress addr = InetAddress.getLocalHost();
+        machineAddress = addr.getHostAddress();
+      }
+      catch (UnknownHostException e)
+      {
+        machineAddress = "127.0.0.1";
+      }
+      
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
@@ -37,7 +47,7 @@ public class BattleShip extends JFrame {
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      Player client = new Player(clientPlayer);
+      Player client = new Player(player);
 
       client.setField(clientField);
 
