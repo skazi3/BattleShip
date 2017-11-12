@@ -24,9 +24,9 @@ public class FieldContainer extends Container {
 		initializeCol();
 		setLayout(new BorderLayout());
 		add(row, BorderLayout.NORTH);
-		add(makeField(), BorderLayout.SOUTH);
+		add(makeField(), BorderLayout.CENTER);
 		if(no == 1)
-			add(makeShips());
+			add(makeShips(), BorderLayout.SOUTH);
 		setSize(260, 280);
 		setVisible(true);
 	}
@@ -39,7 +39,7 @@ public class FieldContainer extends Container {
 	
 	private Container makeShips() {
 		ships = new ArrayList<MyButton>();
-		Container c= new Container();
+		Container c = new Container();
 		c.setLayout(new GridLayout(1, 10, 1, 1));
 		for(int i = 0; i < 10;i++) {
 			ships.add(new MyButton(new ImageIcon(((new ImageIcon(
