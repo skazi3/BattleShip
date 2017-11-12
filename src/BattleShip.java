@@ -154,7 +154,7 @@ public class BattleShip extends JFrame {
                                        "3. Take turns attacking your opponent using the top side of the board.\n"+
                                        "4. After all 5 ships were knocked down on either side, the game ends" + 
                                        "and a winner is declared.\n" +
-                                       "5. Don't forget to have fun!",
+                                       "5. Don't forget to have fun!!!",
                                "How to play", JOptionPane.PLAIN_MESSAGE);
                    }
 
