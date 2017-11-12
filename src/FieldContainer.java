@@ -10,7 +10,7 @@ public class FieldContainer extends Container {
 	private JLabel row = new JLabel("         A      B      C     D     E      F    G     H     I      J ");
 	private ArrayList<String> col;
 	private int shipSize = -1;
-	private int buttonCount = 0;
+	public int buttonCount;
 	private String[] images = {"images/batt1.gif", "images/batt2.gif", "images/batt3.gif",
 			"images/batt4.gif", "images/batt5.gif", "images/batt6.gif", "images/batt7.gif",
 			"images/batt8.gif", "images/batt9.gif", "images/batt10.gif"};

@@ -116,30 +116,35 @@ public class BattleShipServer extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
 			   clientField.get(1).setShipChosen('A', 5);
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
 	   battleShip.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
 			   clientField.get(1).setShipChosen('B', 4);
 			   battleShip.setEnabled(false);
 		   }
 	   });
 	   destroyer.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
 			   clientField.get(1).setShipChosen('D', 3);
 			   destroyer.setEnabled(false);
 		   }
 	   });
 	   submarine.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
 			   clientField.get(1).setShipChosen('S', 3);
 			   submarine.setEnabled(false);
 		   }
 	   });
 	   patrolBoat.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
 			   clientField.get(1).setShipChosen('P', 2);
 			   patrolBoat.setEnabled(false);
 		   }
