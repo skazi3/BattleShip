@@ -17,6 +17,8 @@ public class BattleShip extends JFrame {
 	private StatusBar statusBar;
 	boolean connected;
 	Socket echoSocket;
+	boolean serverContinue;
+	ServerSocket serverSocket;
 	PrintWriter out;
 	BufferedReader in;
 	int rounds = 0;
@@ -90,6 +92,8 @@ public class BattleShip extends JFrame {
 	   JMenuItem exit = new JMenuItem("Exit");
 
 	   JMenuItem statistics = new JMenuItem("View stats");
+	   
+	   JMenuItem connection = new JMenuItem("Start Connection");
 	  
 	   //ships item stuff
 	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
@@ -113,6 +117,9 @@ public class BattleShip extends JFrame {
 		   }
 	   });
 	   
+	   //actionlistener for connect
+	   connection.addActionListener(new ConnectionListener(this));
+	   
 	   //add to menu stuff
 	   file.add(exit); 
 	   file.add(about);
@@ -127,6 +134,9 @@ public class BattleShip extends JFrame {
 	   //add to stats
 	   stats.add(statistics);
 	   
+	   //connection items
+	   connect.add(connection);
+	   
 	   //add to menubar stuff
 	   menuBar.add(file);
 	   menuBar.add(help);
@@ -139,3 +149,117 @@ public class BattleShip extends JFrame {
    }
 	   
 }
+class ConnectionListener implements ActionListener{
+	BattleShip battleShip;
+	public ConnectionListener(BattleShip bs) {
+		battleShip = bs;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		new ConnectionThread (battleShip);
+		
+	}
+	
+}
+class ConnectionThread extends Thread{
+	BattleShip gui;
+	   
+   public ConnectionThread (BattleShip es3)
+   {
+     gui = es3;
+     start();
+   }
+   
+   public void run()
+   {
+     gui.serverContinue = true;
+     
+     try 
+     { 
+       gui.serverSocket = new ServerSocket(0); 
+       
+       System.out.println ("Connection Socket Created");
+       try { 
+         while (gui.serverContinue)
+         {
+           System.out.println ("Waiting for Connection");
+           
+           new CommunicationThread (gui.serverSocket.accept(), gui); 
+         }
+       } 
+       catch (IOException e) 
+       { 
+         System.err.println("Accept failed."); 
+         System.exit(1); 
+       } 
+     } 
+     catch (IOException e) 
+     { 
+       System.err.println("Could not listen on port: 10008."); 
+       System.exit(1); 
+     } 
+     finally
+     {
+       try {
+         gui.serverSocket.close(); 
+       }
+       catch (IOException e)
+       { 
+         System.err.println("Could not close port: 10008."); 
+         System.exit(1); 
+       } 
+     }
+   }
+}
+
+class CommunicationThread extends Thread
+{ 
+ //private boolean serverContinue = true;
+ private Socket clientSocket;
+ private BattleShip gui;
+
+
+
+ public CommunicationThread (Socket clientSoc, BattleShip ec3)
+   {
+    clientSocket = clientSoc;
+    gui = ec3;  
+    start();
+   }
+
+ public void run()
+   {
+    System.out.println ("New Communication Thread Started");
+
+    try { 
+         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
+                                      true); 
+         BufferedReader in = new BufferedReader( 
+                 new InputStreamReader( clientSocket.getInputStream())); 
+
+         String inputLine; 
+
+         while ((inputLine = in.readLine()) != null) 
+             { 
+              System.out.println ("Server: " + inputLine); 
+              out.println(inputLine); 
+
+              if (inputLine.equals("Bye.")) 
+                  break; 
+
+              if (inputLine.equals("End Server.")) 
+                  gui.serverContinue = false; 
+             } 
+
+         out.close(); 
+         in.close(); 
+         clientSocket.close(); 
+        } 
+    catch (IOException e) 
+        { 
+         System.err.println("Problem with Communication Server");
+         //System.exit(1); 
+        } 
+    }
+} 
+
