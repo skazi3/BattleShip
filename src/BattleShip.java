@@ -78,6 +78,8 @@ public class BattleShip extends JFrame {
 	   //menu item stuff
 	   JMenuItem about = new JMenuItem("About");
 	   JMenuItem exit = new JMenuItem("Exit");
+	   
+	   JMenuItem howToPlay = new JMenuItem("How to Play");
 
 	   JMenuItem statistics = new JMenuItem("View stats");
 	  
@@ -104,8 +106,43 @@ public class BattleShip extends JFrame {
 	   });
 	   
 	   //add to menu stuff
-	   file.add(exit); 
 	   file.add(about);
+	   file.add(exit);
+       about.addActionListener(
+
+               new ActionListener() {  // anonymous inner class
+
+                   // display message dialog when user selects About...
+                   public void actionPerformed(ActionEvent event) {
+                       JOptionPane.showMessageDialog(BattleShip.this,
+                               "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather\nProject 4 - BattleShip\nCS 342",
+                               "About", JOptionPane.PLAIN_MESSAGE);
+                   }
+
+               }  // end anonymous inner class
+
+       ); // end call to addActionListener
+	   
+	   help.add(howToPlay);
+	   
+       howToPlay.addActionListener(
+
+               new ActionListener() {  // anonymous inner class
+
+                   // display message dialog when user selects About...
+                   public void actionPerformed(ActionEvent event) {
+                       JOptionPane.showMessageDialog(BattleShip.this,
+                               "1. First connect the server and client to play against opponent.\n" +
+                                       "2. Place all the ships on bottom side of the board\n" +
+                                       "3. Take turns attacking your opponent using the top side of the board.\n"+
+                                       "4. After all 5 ships were knocked down on either side, the game ends" + 
+                                       "and a winner is declared.\n" +
+                                       "5. Don't forget to have fun!",
+                               "How to play", JOptionPane.PLAIN_MESSAGE);
+                   }
+
+               }  // end anonymous inner class
+    		   ); // end call to addActionListener
 	   
 	   //add to ships stuff
 	   ships.add(aircraftCarrier);
