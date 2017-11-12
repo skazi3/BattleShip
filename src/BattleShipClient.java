@@ -19,9 +19,6 @@ public class BattleShipClient extends JFrame {
 	boolean connected;
 	Socket echoSocket;
 	
-	//server stuff
-	boolean serverContinue;
-	ServerSocket serverSocket;
 	
 	PrintWriter out;
 	BufferedReader in;
@@ -32,18 +29,7 @@ public class BattleShipClient extends JFrame {
       super( "BattleShip " + p );
       player = p;
       setJMenuBar(MenuBar());
-      if(p == "Server") {
-	      String machineAddress = null;
-	      try
-	      {  
-	        InetAddress addr = InetAddress.getLocalHost();
-	        machineAddress = addr.getHostAddress();
-	      }
-	      catch (UnknownHostException e)
-	      {
-	        machineAddress = "127.0.0.1";
-	      }
-      }
+  
       
       container = getContentPane();
       container.setLayout (new BorderLayout());
@@ -130,19 +116,14 @@ public class BattleShipClient extends JFrame {
 	   //add to menu stuff
 	   file.add(about);
 	   file.add(exit);
-       about.addActionListener(
-
-               new ActionListener() {  // anonymous inner class
-
+       about.addActionListener(new ActionListener() {  // anonymous inner class
                    // display message dialog when user selects About...
                    public void actionPerformed(ActionEvent event) {
                        JOptionPane.showMessageDialog(BattleShipClient.this,
                                "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather\nProject 4 - BattleShip\nCS 342",
                                "About", JOptionPane.PLAIN_MESSAGE);
                    }
-
                }  // end anonymous inner class
-
        ); // end call to addActionListener
 	   
 	   help.add(howToPlay);
@@ -166,6 +147,13 @@ public class BattleShipClient extends JFrame {
                }  // end anonymous inner class
     		   ); // end call to addActionListener
 	   
+       connection.addActionListener(new ActionListener() {
+    	   		public void actionPerformed(ActionEvent e) {
+    	   			if(connected) {
+    	   				
+    	   			}
+    	   		}
+       });
 	   //add to ships stuff
 	   ships.add(aircraftCarrier);
 	   ships.add(battleShip);

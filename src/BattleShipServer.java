@@ -15,10 +15,7 @@ public class BattleShipServer extends JFrame {
 	private Container container;
 	private String player;
 	private StatusBar statusBar;
-	//client stuff
-	boolean connected;
-	Socket echoSocket;
-	
+
 	//server stuff
 	boolean serverContinue;
 	ServerSocket serverSocket;
