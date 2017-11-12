@@ -10,20 +10,24 @@ import javax.swing.*;
 public class BattleShip extends JFrame {
  
 	//2 user Grids and 2 opponent grids
-	private ArrayList<FieldContainer> userField;
-	private ArrayList<FieldContainer> opponentField;
+	private ArrayList<FieldContainer> clientField;
+
 	private Container container;
-	private int userPlayer = 0;
-	private int opponentPlayer = 1;
+	private int clientPlayer = 0;
+	private String player;
 	private StatusBar statusBar;
+	boolean connected;
+	Socket echoSocket;
+	PrintWriter out;
+	BufferedReader in;
 	int rounds = 0;
    // set up GUI
-   public BattleShip()
+   public BattleShip(String p)
    {
-      super( "BattleShip" );
-     
+      super( "BattleShip " + p );
+      player = p;
       setJMenuBar(MenuBar());
-
+      
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
@@ -33,30 +37,26 @@ public class BattleShip extends JFrame {
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      Player user = new Player(userPlayer);
-      Player opponent = new Player(opponentPlayer);
-      user.setField(userField);
-      opponent.setField(opponentField);
+      Player client = new Player(clientPlayer);
+
+      client.setField(clientField);
+
      
-      setSize( 650, 630);
+      setSize( 325, 630);
       setVisible( true );
 
    } // end constructor
 
-   
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
 	   Container battleField = new Container();
-	   battleField.setLayout(new GridLayout(2, 2, 4, 4));
-	   userField = new ArrayList<FieldContainer>();
-	   opponentField = new ArrayList<FieldContainer>();
+	   battleField.setLayout(new GridLayout(2, 1, 4, 4));
+	   clientField = new ArrayList<FieldContainer>();
+
 	   
-	   for(int i = 0; i < 4; i++) {
+	   for(int i = 0; i < 2; i++) {
 		   FieldContainer c = new FieldContainer();
-		   if(i % 2 == 0)
-			   userField.add(c.getContainer());
-		   else
-			   opponentField.add(c.getContainer());
+		   clientField.add(c.getContainer());
 		   battleField.add(c);
 	   }
 	
@@ -100,7 +100,7 @@ public class BattleShip extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   userField.get(1).setShipChosen('A', 5);
+			   clientField.get(1).setShipChosen('A', 5);
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
