@@ -15,10 +15,14 @@ public class BattleShip extends JFrame {
 	private Container container;
 	private String player;
 	private StatusBar statusBar;
+	//client stuff
 	boolean connected;
 	Socket echoSocket;
+	
+	//server stuff
 	boolean serverContinue;
 	ServerSocket serverSocket;
+	
 	PrintWriter out;
 	BufferedReader in;
 	int rounds = 0;
@@ -28,16 +32,17 @@ public class BattleShip extends JFrame {
       super( "BattleShip " + p );
       player = p;
       setJMenuBar(MenuBar());
-      
-      String machineAddress = null;
-      try
-      {  
-        InetAddress addr = InetAddress.getLocalHost();
-        machineAddress = addr.getHostAddress();
-      }
-      catch (UnknownHostException e)
-      {
-        machineAddress = "127.0.0.1";
+      if(p == "Server") {
+	      String machineAddress = null;
+	      try
+	      {  
+	        InetAddress addr = InetAddress.getLocalHost();
+	        machineAddress = addr.getHostAddress();
+	      }
+	      catch (UnknownHostException e)
+	      {
+	        machineAddress = "127.0.0.1";
+	      }
       }
       
       container = getContentPane();
@@ -118,7 +123,7 @@ public class BattleShip extends JFrame {
 	   });
 	   
 	   //actionlistener for connect
-	   connection.addActionListener(new ConnectionListener(this));
+	   connection.addActionListener(new ConnectionListener(this, player));
 	   
 	   //add to menu stuff
 	   file.add(exit); 
@@ -151,12 +156,15 @@ public class BattleShip extends JFrame {
 }
 class ConnectionListener implements ActionListener{
 	BattleShip battleShip;
-	public ConnectionListener(BattleShip bs) {
+	String player;
+	public ConnectionListener(BattleShip bs, String p) {
 		battleShip = bs;
+		player = p;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new ConnectionThread (battleShip);
+		if(player == "Server")
+			new ConnectionThread (battleShip);
 		
 	}
 	
