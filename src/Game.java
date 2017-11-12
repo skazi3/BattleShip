@@ -1,3 +1,4 @@
+import javax.swing.JFrame;
 
 public class Game {
 
@@ -5,8 +6,8 @@ public class Game {
 		BattleShip bsClient = new BattleShip("Client");
 		BattleShip bsServer = new BattleShip("Server");
 		
-		bsClient.setDefaultCloseOperation(bsClient.EXIT_ON_CLOSE);
-		bsServer.setDefaultCloseOperation(bsServer.EXIT_ON_CLOSE);
+		bsClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		bsServer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 
 	}

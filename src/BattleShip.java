@@ -13,11 +13,12 @@ public class BattleShip extends JFrame {
 	private ArrayList<FieldContainer> clientField;
 
 	private Container container;
-	private int clientPlayer = 0;
 	private String player;
 	private StatusBar statusBar;
 	boolean connected;
 	Socket echoSocket;
+	boolean serverContinue;
+	ServerSocket serverSocket;
 	PrintWriter out;
 	BufferedReader in;
 	int rounds = 0;
@@ -28,6 +29,17 @@ public class BattleShip extends JFrame {
       player = p;
       setJMenuBar(MenuBar());
       
+      String machineAddress = null;
+      try
+      {  
+        InetAddress addr = InetAddress.getLocalHost();
+        machineAddress = addr.getHostAddress();
+      }
+      catch (UnknownHostException e)
+      {
+        machineAddress = "127.0.0.1";
+      }
+      
       container = getContentPane();
       container.setLayout (new BorderLayout());
       statusBar = new StatusBar();
@@ -37,7 +49,7 @@ public class BattleShip extends JFrame {
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      Player client = new Player(clientPlayer);
+      Player client = new Player(player);
 
       client.setField(clientField);
 
@@ -82,6 +94,8 @@ public class BattleShip extends JFrame {
 	   JMenuItem howToPlay = new JMenuItem("How to Play");
 
 	   JMenuItem statistics = new JMenuItem("View stats");
+	   
+	   JMenuItem connection = new JMenuItem("Start Connection");
 	  
 	   //ships item stuff
 	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
@@ -104,6 +118,9 @@ public class BattleShip extends JFrame {
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
+	   
+	   //actionlistener for connect
+	   connection.addActionListener(new ConnectionListener(this));
 	   
 	   //add to menu stuff
 	   file.add(about);
@@ -154,6 +171,9 @@ public class BattleShip extends JFrame {
 	   //add to stats
 	   stats.add(statistics);
 	   
+	   //connection items
+	   connect.add(connection);
+	   
 	   //add to menubar stuff
 	   menuBar.add(file);
 	   menuBar.add(help);
@@ -166,3 +186,117 @@ public class BattleShip extends JFrame {
    }
 	   
 }
+class ConnectionListener implements ActionListener{
+	BattleShip battleShip;
+	public ConnectionListener(BattleShip bs) {
+		battleShip = bs;
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		new ConnectionThread (battleShip);
+		
+	}
+	
+}
+class ConnectionThread extends Thread{
+	BattleShip gui;
+	   
+   public ConnectionThread (BattleShip es3)
+   {
+     gui = es3;
+     start();
+   }
+   
+   public void run()
+   {
+     gui.serverContinue = true;
+     
+     try 
+     { 
+       gui.serverSocket = new ServerSocket(0); 
+       
+       System.out.println ("Connection Socket Created");
+       try { 
+         while (gui.serverContinue)
+         {
+           System.out.println ("Waiting for Connection");
+           
+           new CommunicationThread (gui.serverSocket.accept(), gui); 
+         }
+       } 
+       catch (IOException e) 
+       { 
+         System.err.println("Accept failed."); 
+         System.exit(1); 
+       } 
+     } 
+     catch (IOException e) 
+     { 
+       System.err.println("Could not listen on port: 10008."); 
+       System.exit(1); 
+     } 
+     finally
+     {
+       try {
+         gui.serverSocket.close(); 
+       }
+       catch (IOException e)
+       { 
+         System.err.println("Could not close port: 10008."); 
+         System.exit(1); 
+       } 
+     }
+   }
+}
+
+class CommunicationThread extends Thread
+{ 
+ //private boolean serverContinue = true;
+ private Socket clientSocket;
+ private BattleShip gui;
+
+
+
+ public CommunicationThread (Socket clientSoc, BattleShip ec3)
+   {
+    clientSocket = clientSoc;
+    gui = ec3;  
+    start();
+   }
+
+ public void run()
+   {
+    System.out.println ("New Communication Thread Started");
+
+    try { 
+         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
+                                      true); 
+         BufferedReader in = new BufferedReader( 
+                 new InputStreamReader( clientSocket.getInputStream())); 
+
+         String inputLine; 
+
+         while ((inputLine = in.readLine()) != null) 
+             { 
+              System.out.println ("Server: " + inputLine); 
+              out.println(inputLine); 
+
+              if (inputLine.equals("Bye.")) 
+                  break; 
+
+              if (inputLine.equals("End Server.")) 
+                  gui.serverContinue = false; 
+             } 
+
+         out.close(); 
+         in.close(); 
+         clientSocket.close(); 
+        } 
+    catch (IOException e) 
+        { 
+         System.err.println("Problem with Communication Server");
+         //System.exit(1); 
+        } 
+    }
+} 
+

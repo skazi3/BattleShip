@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class Player {
-	private int player;
+	private String player;
 	private ArrayList<FieldContainer> battleField;
 	private Ship ships;
 	
-	public Player(int p) {
+	public Player(String p) {
 		player = p;
 		ships = new Ship();
 	}
