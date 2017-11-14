@@ -84,10 +84,13 @@ public class FieldContainer extends Container {
 /*---------------------makes actionlistener--------------------------------------------------------------*/
 				coordinates[i][j].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						buttonCount++;
-						if(shipSize != -1 && buttonCount <= shipSize) {
-							MyButton b= (MyButton) e.getSource();
-							b.setIcon(img);
+						MyButton b= (MyButton) e.getSource();
+						if(!b.getOccupied()) {
+							buttonCount++;
+							if(shipSize != -1 && buttonCount <= shipSize) {
+								b.setIcon(img);
+							}
+							b.setOccupied(true);
 						}
 					}
 				});

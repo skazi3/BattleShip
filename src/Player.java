@@ -19,6 +19,12 @@ public class Player {
 	public void setAttackContainer(AttackContainer af) {
 		attackField = af;
 	}
+	public FieldContainer getFieldContainer() {
+		return battleField;
+	}
+	public AttackContainer getAttackContainer() {
+		return attackField;
+	}
 	
 	public int getHits() {
 		return isHit;
