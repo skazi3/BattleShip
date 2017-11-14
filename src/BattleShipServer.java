@@ -244,6 +244,11 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      // get content pane and set its layout
 	      Container container = getContentPane();
 	      container.setLayout( new FlowLayout() );
+	      
+			// set up the North panel
+			JPanel upperPanel = new JPanel ();
+			upperPanel.setLayout (new GridLayout (4,2));
+			container.add (upperPanel, BorderLayout.NORTH);
 
 	      // create buttons
 	      running = false;
@@ -251,15 +256,16 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      ssButton.addActionListener( this );
 	      container.add( ssButton );
 
-	      container.add ( new JLabel ("Message: ", JLabel.RIGHT) );
+	      upperPanel.add ( new JLabel ("Message: ", JLabel.LEFT) );
 	      message = new JTextField ("");
 	      message.addActionListener( this );
-	      container.add( message);
+	      
+	      upperPanel.add( message);
 	      
 	      sendButton = new JButton( "Send Message" );
 	      sendButton.addActionListener( this );
 	      sendButton.setEnabled (false);
-	      container.add( sendButton );
+	      upperPanel.add( sendButton );
 	      
 	      String machineAddress = null;
 	      try
@@ -272,13 +278,13 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	        machineAddress = "127.0.0.1";
 	      }
 	      machineInfo = new JLabel (machineAddress);
-	      container.add( machineInfo );
+	      //container.add( machineInfo );
 	      portInfo = new JLabel (" Not Listening ");
 	      container.add( portInfo );
 
-	      history = new JTextArea ( 10, 40 );
-	      history.setEditable(false);
-	      container.add( new JScrollPane(history) );
+//	      history = new JTextArea ( 10, 40 );
+//	      history.setEditable(false);
+//	      container.add( new JScrollPane(history) );
 
 	      setSize( 500, 250 );
 	      setVisible( true );
