@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 public class Game {
 
 	public static void main(String[] args) {
-		BattleShipServer bsClient = new BattleShipServer("Client");
+		BattleShipClient bsClient = new BattleShipClient("Client");
 		BattleShipServer bsServer = new BattleShipServer("Server");
 		
 		bsClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
