@@ -168,7 +168,7 @@ public class BattleShipServer extends JFrame {
                    // display message dialog when user selects About...
                    public void actionPerformed(ActionEvent event) {
                        JOptionPane.showMessageDialog(BattleShipServer.this,
-                               "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather\nProject 4 - BattleShip\nCS 342",
+                               "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather, sather2\nProject 4 - BattleShip\nCS 342",
                                "About", JOptionPane.PLAIN_MESSAGE);
                    }
 
