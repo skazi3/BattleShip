@@ -10,7 +10,8 @@ import javax.swing.*;
 public class BattleShipServer extends JFrame {
  
 	//2 user Grids and 2 opponent grids
-	private ArrayList<FieldContainer> clientField;
+	private FieldContainer battleField;
+	private AttackContainer attackField;
 
 	private Container container;
 	private String player;
@@ -53,7 +54,8 @@ public class BattleShipServer extends JFrame {
       container.setBackground(Color.LIGHT_GRAY);
       Player client = new Player(player);
 
-      client.setField(clientField);
+      client.setAttackContainer(attackField);
+      client.setFieldContainer(battleField);
 
      
       setSize( 325, 680);
@@ -63,20 +65,18 @@ public class BattleShipServer extends JFrame {
 
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
-	   Container battleField = new Container();
-	   battleField.setLayout(new GridLayout(2, 1, 4, 4));
-	   clientField = new ArrayList<FieldContainer>();
+	   Container c = new Container();
+	   c.setLayout(new GridLayout(2, 1, 4, 4));
 
 	   
-	   for(int i = 0; i < 2; i++) {
-		   FieldContainer c = new FieldContainer(i);
-		   clientField.add(c.getContainer());
-		   battleField.add(c);
-	   }
-	
-
+	   AttackContainer a = new AttackContainer(0);
+	   FieldContainer f = new FieldContainer(1);
+		   
+	   c.add(a);
+	   c.add(f);
 	   
-	   return battleField;
+
+	   return c;
 	   
    }
    //adds menu bar functions
@@ -116,36 +116,36 @@ public class BattleShipServer extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   clientField.get(1).buttonCount = 0;
-			   clientField.get(1).setShipChosen('A', 5);
+			   battleField.buttonCount = 0;
+			   battleField.setShipChosen('A', 5);
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
 	   battleShip.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   clientField.get(1).buttonCount = 0;
-			   clientField.get(1).setShipChosen('B', 4);
+			   battleField.buttonCount = 0;
+			   battleField.setShipChosen('B', 4);
 			   battleShip.setEnabled(false);
 		   }
 	   });
 	   destroyer.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   clientField.get(1).buttonCount = 0;
-			   clientField.get(1).setShipChosen('D', 3);
+			   battleField.buttonCount = 0;
+			   battleField.setShipChosen('D', 3);
 			   destroyer.setEnabled(false);
 		   }
 	   });
 	   submarine.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   clientField.get(1).buttonCount = 0;
-			   clientField.get(1).setShipChosen('S', 3);
+			   battleField.buttonCount = 0;
+			   battleField.setShipChosen('S', 3);
 			   submarine.setEnabled(false);
 		   }
 	   });
 	   patrolBoat.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   clientField.get(1).buttonCount = 0;
-			   clientField.get(1).setShipChosen('P', 2);
+			   battleField.buttonCount = 0;
+			   battleField.setShipChosen('P', 2);
 			   patrolBoat.setEnabled(false);
 		   }
 	   });
