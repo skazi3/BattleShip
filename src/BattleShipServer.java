@@ -228,11 +228,13 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  JLabel machineInfo;
 	  JLabel portInfo;
 	  JTextArea history;
+	  JButton sendButton;
 	  private boolean running;
 
 	  // Network Items
 	  boolean serverContinue;
 	  ServerSocket serverSocket;
+	  JTextField message;
 
 	   // set up GUI
 	   public ConnectionServerListener()
@@ -249,6 +251,16 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      ssButton.addActionListener( this );
 	      container.add( ssButton );
 
+	      container.add ( new JLabel ("Message: ", JLabel.RIGHT) );
+	      message = new JTextField ("");
+	      message.addActionListener( this );
+	      container.add( message);
+	      
+	      sendButton = new JButton( "Send Message" );
+	      sendButton.addActionListener( this );
+	      sendButton.setEnabled (false);
+	      container.add( sendButton );
+	      
 	      String machineAddress = null;
 	      try
 	      {  
