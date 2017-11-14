@@ -151,8 +151,12 @@ public class BattleShipServer extends JFrame {
 	   });
 	   
 	   
-	   //actionlistener for connect
-	   connection.addActionListener(new ConnectionListener(this, player));
+	   //actionlistener for connect	
+	   connection.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   new ConnectionServerListener();
+		   }
+	   });
 	   
 	   //add to menu stuff
 	   file.add(about);
@@ -216,122 +220,186 @@ public class BattleShipServer extends JFrame {
 	   
 	   return menuBar;
    }
+}
+
+class ConnectionServerListener extends JFrame implements ActionListener{
+	// GUI items
+	  JButton ssButton;
+	  JLabel machineInfo;
+	  JLabel portInfo;
+	  JTextArea history;
+	  private boolean running;
+
+	  // Network Items
+	  boolean serverContinue;
+	  ServerSocket serverSocket;
+
+	   // set up GUI
+	   public ConnectionServerListener()
+	   {
+	      super( "Connection Server" );
+
+	      // get content pane and set its layout
+	      Container container = getContentPane();
+	      container.setLayout( new FlowLayout() );
+
+	      // create buttons
+	      running = false;
+	      ssButton = new JButton( "Start Listening" );
+	      ssButton.addActionListener( this );
+	      container.add( ssButton );
+
+	      String machineAddress = null;
+	      try
+	      {  
+	        InetAddress addr = InetAddress.getLocalHost();
+	        machineAddress = addr.getHostAddress();
+	      }
+	      catch (UnknownHostException e)
+	      {
+	        machineAddress = "127.0.0.1";
+	      }
+	      machineInfo = new JLabel (machineAddress);
+	      container.add( machineInfo );
+	      portInfo = new JLabel (" Not Listening ");
+	      container.add( portInfo );
+
+	      history = new JTextArea ( 10, 40 );
+	      history.setEditable(false);
+	      container.add( new JScrollPane(history) );
+
+	      setSize( 500, 250 );
+	      setVisible( true );
+
+	   } // end CountDown constructor
+
+
+	    // handle button event
+	    public void actionPerformed( ActionEvent event )
+	    {
+	       if (running == false)
+	       {
+	         new ConnectionThread (this);
+	       }
+	       else
+	       {
+	         serverContinue = false;
+	         ssButton.setText ("Start Listening");
+	         portInfo.setText (" Not Listening ");
+	       }
+	    }
+
+
+	 } // end class EchoServer3
+
+
+	class ConnectionThread extends Thread
+	 {
+		ConnectionServerListener gui;
 	   
-}
-class ConnectionListener implements ActionListener{
-	BattleShipServer battleShip;
-	String player;
-	public ConnectionListener(BattleShipServer bs, String p) {
-		battleShip = bs;
-		player = p;
-	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(player == "Server")
-			new ConnectionThread (battleShip);
-		
-	}
-	
-}
-class ConnectionThread extends Thread{
-	BattleShipServer gui;
+	   public ConnectionThread (ConnectionServerListener es3)
+	   {
+	     gui = es3;
+	     start();
+	   }
 	   
-   public ConnectionThread (BattleShipServer es3)
-   {
-     gui = es3;
-     start();
-   }
-   
-   public void run()
-   {
-     gui.serverContinue = true;
-     
-     try 
-     { 
-       gui.serverSocket = new ServerSocket(0); 
-       
-       System.out.println ("Connection Socket Created");
-       try { 
-         while (gui.serverContinue)
-         {
-           System.out.println ("Waiting for Connection");
-           
-           new CommunicationThread (gui.serverSocket.accept(), gui); 
-         }
-       } 
-       catch (IOException e) 
-       { 
-         System.err.println("Accept failed."); 
-         System.exit(1); 
-       } 
-     } 
-     catch (IOException e) 
-     { 
-       System.err.println("Could not listen on port: 10008."); 
-       System.exit(1); 
-     } 
-     finally
-     {
-       try {
-         gui.serverSocket.close(); 
-       }
-       catch (IOException e)
-       { 
-         System.err.println("Could not close port: 10008."); 
-         System.exit(1); 
-       } 
-     }
-   }
-}
+	   public void run()
+	   {
+	     gui.serverContinue = true;
+	     
+	     try 
+	     { 
+	       gui.serverSocket = new ServerSocket(0); 
+	       gui.portInfo.setText("Listening on Port: " + gui.serverSocket.getLocalPort());
+	       System.out.println ("Connection Socket Created");
+	       try { 
+	         while (gui.serverContinue)
+	         {
+	           System.out.println ("Waiting for Connection");
+	           gui.ssButton.setText("Stop Listening");
+	           new CommunicationThread (gui.serverSocket.accept(), gui); 
+	         }
+	       } 
+	       catch (IOException e) 
+	       { 
+	         System.err.println("Accept failed."); 
+	         System.exit(1); 
+	       } 
+	     } 
+	     catch (IOException e) 
+	     { 
+	       System.err.println("Could not listen on port: 10008."); 
+	       System.exit(1); 
+	     } 
+	     finally
+	     {
+	       try {
+	         gui.serverSocket.close(); 
+	       }
+	       catch (IOException e)
+	       { 
+	         System.err.println("Could not close port: 10008."); 
+	         System.exit(1); 
+	       } 
+	     }
+	   }
+	 }
+	 
 
-class CommunicationThread extends Thread
-{ 
- //private boolean serverContinue = true;
- private Socket clientSocket;
- private BattleShipServer gui;
+	class CommunicationThread extends Thread
+	{ 
+	 //private boolean serverContinue = true;
+	 private Socket clientSocket;
+	 private ConnectionServerListener gui;
 
 
 
- public CommunicationThread (Socket clientSoc, BattleShipServer ec3)
-   {
-    clientSocket = clientSoc;
-    gui = ec3;  
-    start();
-   }
+	 public CommunicationThread (Socket clientSoc, ConnectionServerListener ec3)
+	   {
+	    clientSocket = clientSoc;
+	    gui = ec3;
+	    gui.history.insert ("Communicating with Port" + clientSocket.getLocalPort()+"\n", 0);
+	    start();
+	   }
 
- public void run()
-   {
-    System.out.println ("New Communication Thread Started");
+	 public void run()
+	   {
+	    System.out.println ("New Communication Thread Started");
 
-    try { 
-         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
-                                      true); 
-         BufferedReader in = new BufferedReader( 
-                 new InputStreamReader( clientSocket.getInputStream())); 
+	    try { 
+	         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), 
+	                                      true); 
+	         BufferedReader in = new BufferedReader( 
+	                 new InputStreamReader( clientSocket.getInputStream())); 
 
-         String inputLine; 
+	         String inputLine; 
 
-         while ((inputLine = in.readLine()) != null) 
-             { 
-              System.out.println ("Server: " + inputLine); 
-              out.println(inputLine); 
+	         while ((inputLine = in.readLine()) != null) 
+	             { 
+	              System.out.println ("Server: " + inputLine); 
+//------------------------FIRE AT SERVER BOARD HERE USING INPUTLINE----------------------------//
+	              
+	              
+	              
+	              gui.history.insert (inputLine+"\n", 0);
+	              out.println(inputLine); 
 
-              if (inputLine.equals("Bye.")) 
-                  break; 
+	              if (inputLine.equals("Bye.")) 
+	                  break; 
 
-              if (inputLine.equals("End Server.")) 
-                  gui.serverContinue = false; 
-             } 
+	              if (inputLine.equals("End Server.")) 
+	                  gui.serverContinue = false; 
+	             } 
 
-         out.close(); 
-         in.close(); 
-         clientSocket.close(); 
-        } 
-    catch (IOException e) 
-        { 
-         System.err.println("Problem with Communication Server");
-         //System.exit(1); 
-        } 
-    }
-} 
+	         out.close(); 
+	         in.close(); 
+	         clientSocket.close(); 
+	        } 
+	    catch (IOException e) 
+	        { 
+	         System.err.println("Problem with Communication Server");
+	         //System.exit(1); 
+	        } 
+	    }
+	} 
 
