@@ -358,7 +358,7 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	   {
 	    clientSocket = clientSoc;
 	    gui = ec3;
-	    gui.history.insert ("Comminucating with Port" + clientSocket.getLocalPort()+"\n", 0);
+	    gui.history.insert ("Communicating with Port" + clientSocket.getLocalPort()+"\n", 0);
 	    start();
 	   }
 
@@ -377,6 +377,10 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	         while ((inputLine = in.readLine()) != null) 
 	             { 
 	              System.out.println ("Server: " + inputLine); 
+//------------------------FIRE AT SERVER BOARD HERE USING INPUTLINE----------------------------//
+	              
+	              
+	              
 	              gui.history.insert (inputLine+"\n", 0);
 	              out.println(inputLine); 
 
