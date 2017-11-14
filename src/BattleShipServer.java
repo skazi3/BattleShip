@@ -152,7 +152,7 @@ public class BattleShipServer extends JFrame {
 	   
 	   
 	   //actionlistener for connect
-	   connection.addActionListener(new ConnectionListener(this, player));
+	   connection.addActionListener(new ConnectionServerListener(this, player));
 	   
 	   //add to menu stuff
 	   file.add(about);
@@ -218,10 +218,10 @@ public class BattleShipServer extends JFrame {
    }
 	   
 }
-class ConnectionListener implements ActionListener{
+ class ConnectionServerListener implements ActionListener{
 	BattleShipServer battleShip;
 	String player;
-	public ConnectionListener(BattleShipServer bs, String p) {
+	public ConnectionServerListener(BattleShipServer bs, String p) {
 		battleShip = bs;
 		player = p;
 	}
