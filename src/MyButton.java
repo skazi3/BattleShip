@@ -5,7 +5,6 @@ public class MyButton extends JButton{
 	private char row;
 	private int col;
 	private boolean isOccupied;
-	
 	public MyButton(char r, int c, ImageIcon img) {
 		super(img);
 		isOccupied = false;
@@ -34,10 +33,11 @@ public class MyButton extends JButton{
 	public int getCol() {
 		return col;
 	}
-	public boolean getOccupied() {
-		return isOccupied;
-	}
 	public void setOccupied(boolean o) {
 		isOccupied = o;
 	}
+	public boolean getOccupied() {
+		return isOccupied;
+	}
+	
 }

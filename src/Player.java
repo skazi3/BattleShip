@@ -2,8 +2,7 @@ import java.util.ArrayList;
 
 public class Player {
 	private String player;
-	private FieldContainer battleField;
-	private AttackContainer attackField;
+	private ArrayList<FieldContainer> battleField;
 	private Ship ships;
 	private int isHit;
 	
@@ -13,17 +12,8 @@ public class Player {
 		isHit = 0;
 	}
 	
-	public void setFieldContainer(FieldContainer bf) {
+	public void setField(ArrayList<FieldContainer> bf) {
 		battleField = bf;
-	}
-	public void setAttackContainer(AttackContainer af) {
-		attackField = af;
-	}
-	public FieldContainer getFieldContainer() {
-		return battleField;
-	}
-	public AttackContainer getAttackContainer() {
-		return attackField;
 	}
 	
 	public int getHits() {

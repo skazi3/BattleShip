@@ -10,13 +10,11 @@ import javax.swing.*;
 public class BattleShipServer extends JFrame {
  
 	//2 user Grids and 2 opponent grids
-	private FieldContainer battleField;
-	private AttackContainer attackField;
+	private ArrayList<FieldContainer> clientField;
 
 	private Container container;
 	private String player;
 	private StatusBar statusBar;
-	private Player client;
 
 	//server stuff
 	boolean serverContinue;
@@ -49,11 +47,13 @@ public class BattleShipServer extends JFrame {
       statusBar = new StatusBar();
       
       add("South", statusBar.getStatusBar());
-      client = new Player(player);
+      
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      
+      Player client = new Player(player);
+
+      client.setField(clientField);
 
      
       setSize( 325, 680);
@@ -63,19 +63,20 @@ public class BattleShipServer extends JFrame {
 
    //creates four 10x10 grids with row/col identifiers
    private Container makeGrids() {
-	   Container c = new Container();
-	   c.setLayout(new GridLayout(2, 1, 4, 4));
+	   Container battleField = new Container();
+	   battleField.setLayout(new GridLayout(2, 1, 4, 4));
+	   clientField = new ArrayList<FieldContainer>();
 
 	   
-	   AttackContainer a = new AttackContainer(0);
-	   FieldContainer f = new FieldContainer(1);
-	   client.setAttackContainer(a);
-	   client.setFieldContainer(f);
-	   c.add(a);
-	   c.add(f);
-	   
+	   for(int i = 0; i < 2; i++) {
+		   FieldContainer c = new FieldContainer(i);
+		   clientField.add(c.getContainer());
+		   battleField.add(c);
+	   }
+	
 
-	   return c;
+	   
+	   return battleField;
 	   
    }
    //adds menu bar functions
@@ -115,36 +116,36 @@ public class BattleShipServer extends JFrame {
 	   //action listener for ships
 	   aircraftCarrier.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   client.getFieldContainer().buttonCount = 0;
-			   client.getFieldContainer().setShipChosen('A', 5);
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('A', 5);
 			   aircraftCarrier.setEnabled(false);
 		   }
 	   });
 	   battleShip.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   client.getFieldContainer().buttonCount = 0;
-			   client.getFieldContainer().setShipChosen('B', 4);
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('B', 4);
 			   battleShip.setEnabled(false);
 		   }
 	   });
 	   destroyer.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   client.getFieldContainer().buttonCount = 0;
-			   client.getFieldContainer().setShipChosen('D', 3);
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('D', 3);
 			   destroyer.setEnabled(false);
 		   }
 	   });
 	   submarine.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   client.getFieldContainer().buttonCount = 0;
-			   client.getFieldContainer().setShipChosen('S', 3);
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('S', 3);
 			   submarine.setEnabled(false);
 		   }
 	   });
 	   patrolBoat.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   client.getFieldContainer().buttonCount = 0;
-			   client.getFieldContainer().setShipChosen('P', 2);
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('P', 2);
 			   patrolBoat.setEnabled(false);
 		   }
 	   });
@@ -167,7 +168,7 @@ public class BattleShipServer extends JFrame {
                    // display message dialog when user selects About...
                    public void actionPerformed(ActionEvent event) {
                        JOptionPane.showMessageDialog(BattleShipServer.this,
-                               "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather\nProject 4 - BattleShip\nCS 342",
+                               "Jason Guo, jguo28\nSarah Kazi, skazi3\nSarah Ather, sather2\nProject 4 - BattleShip\nCS 342",
                                "About", JOptionPane.PLAIN_MESSAGE);
                    }
 
@@ -227,13 +228,11 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  JLabel machineInfo;
 	  JLabel portInfo;
 	  JTextArea history;
-	  JButton sendButton;
 	  private boolean running;
 
 	  // Network Items
 	  boolean serverContinue;
 	  ServerSocket serverSocket;
-	  JTextField message;
 
 	   // set up GUI
 	   public ConnectionServerListener()
@@ -243,11 +242,6 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      // get content pane and set its layout
 	      Container container = getContentPane();
 	      container.setLayout( new FlowLayout() );
-	      
-			// set up the North panel
-			JPanel upperPanel = new JPanel ();
-			upperPanel.setLayout (new GridLayout (4,2));
-			container.add (upperPanel, BorderLayout.NORTH);
 
 	      // create buttons
 	      running = false;
@@ -255,17 +249,6 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      ssButton.addActionListener( this );
 	      container.add( ssButton );
 
-	      upperPanel.add ( new JLabel ("Message: ", JLabel.LEFT) );
-	      message = new JTextField ("");
-	      message.addActionListener( this );
-	      
-	      upperPanel.add( message);
-	      
-	      sendButton = new JButton( "Send Message" );
-	      sendButton.addActionListener( this );
-	      sendButton.setEnabled (false);
-	      upperPanel.add( sendButton );
-	      
 	      String machineAddress = null;
 	      try
 	      {  
@@ -277,13 +260,13 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	        machineAddress = "127.0.0.1";
 	      }
 	      machineInfo = new JLabel (machineAddress);
-	      //container.add( machineInfo );
+	      container.add( machineInfo );
 	      portInfo = new JLabel (" Not Listening ");
 	      container.add( portInfo );
 
-//	      history = new JTextArea ( 10, 40 );
-//	      history.setEditable(false);
-//	      container.add( new JScrollPane(history) );
+	      history = new JTextArea ( 10, 40 );
+	      history.setEditable(false);
+	      container.add( new JScrollPane(history) );
 
 	      setSize( 500, 250 );
 	      setVisible( true );

@@ -10,142 +10,134 @@ import javax.swing.*;
 public class BattleShipClient extends JFrame {
  
 	//2 user Grids and 2 opponent grids
-		private FieldContainer battleField;
-		private AttackContainer attackField;
+	private ArrayList<FieldContainer> clientField;
 
-		private Container container;
-		private String player;
-		private StatusBar statusBar;
-		private  Player client;
-		//server stuff
-		boolean serverContinue;
-		ServerSocket serverSocket;
-		
-		PrintWriter out;
-		BufferedReader in;
-		int rounds = 0;
-	   // set up GUI
-	   public BattleShipClient(String p)
-	   {
-	      super( "BattleShip " + p );
-	      player = p;
-	      setJMenuBar(MenuBar());
-	      if(p == "Server") {
-		      String machineAddress = null;
-		      try
-		      {  
-		        InetAddress addr = InetAddress.getLocalHost();
-		        machineAddress = addr.getHostAddress();
-		      }
-		      catch (UnknownHostException e)
-		      {
-		        machineAddress = "127.0.0.1";
-		      }
-	      }
-	      
-	      container = getContentPane();
-	      container.setLayout (new BorderLayout());
-	      statusBar = new StatusBar();
-	      
-	      add("South", statusBar.getStatusBar());
-	      client = new Player(player);
-	      //west panel should have something else (???)
-	      container.add(makeGrids(), BorderLayout.WEST);
-	      container.setBackground(Color.LIGHT_GRAY);
-	     
+	private Container container;
+	private String player;
+	private StatusBar statusBar;
+	//client stuff
+	boolean connected;
+	Socket echoSocket;
+	
+	
+	PrintWriter out;
+	BufferedReader in;
+	int rounds = 0;
+   // set up GUI
+   public BattleShipClient(String p)
+   {
+      super( "BattleShip " + p );
+      player = p;
+      setJMenuBar(MenuBar());
+  
+      
+      container = getContentPane();
+      container.setLayout (new BorderLayout());
+      statusBar = new StatusBar();
+      
+      add("South", statusBar.getStatusBar());
+      
+      //west panel should have something else (???)
+      container.add(makeGrids(), BorderLayout.WEST);
+      container.setBackground(Color.LIGHT_GRAY);
+      Player client = new Player(player);
 
-	      setSize( 325, 680);
-	      setVisible( true );
+      client.setField(clientField);
 
-	   } // end constructor
+     
+      setSize( 325, 680);
+      setVisible( true );
 
-	   //creates four 10x10 grids with row/col identifiers
-	   private Container makeGrids() {
-		   Container c = new Container();
-		   c.setLayout(new GridLayout(2, 1, 4, 4));
+   } // end constructor
 
-		   
-		   AttackContainer a = new AttackContainer(0);
-		   FieldContainer f = new FieldContainer(1);
-		   client.setFieldContainer(f);
-		   client.setAttackContainer(a);
-		   c.add(a);
-		   c.add(f);
-		   
+   //creates four 10x10 grids with row/col identifiers
+   private Container makeGrids() {
+	   Container battleField = new Container();
+	   battleField.setLayout(new GridLayout(2, 1, 4, 4));
+	   clientField = new ArrayList<FieldContainer>();
 
-		   return c;
-		   
+	   
+	   for(int i = 0; i < 2; i++) {
+		   FieldContainer c = new FieldContainer(i);
+		   clientField.add(c.getContainer());
+		   battleField.add(c);
 	   }
-	   //adds menu bar functions
-	   private JMenuBar MenuBar() {
-		   JMenuBar menuBar = new JMenuBar();
-		   //JMenu stuff
-		   JMenu file = new JMenu("File");
-		   JMenu help = new JMenu("Help");
-		   JMenu connect = new JMenu("Connect");
-		   JMenu ships =  new JMenu("Ships");
-		   JMenu stats = new JMenu("Statistics");
-		   
-		   //menu item stuff
-		   JMenuItem about = new JMenuItem("About");
-		   JMenuItem exit = new JMenuItem("Exit");
-		   
-		   JMenuItem howToPlay = new JMenuItem("How to Play");
+	
 
-		   JMenuItem statistics = new JMenuItem("View stats");
-		   
-		   JMenuItem connection = new JMenuItem("Start Connection");
-		  
-		   //ships item stuff
-		   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
-		   JMenuItem battleShip = new JMenuItem("Battleship: 4");
-		   JMenuItem destroyer = new JMenuItem("Destroyer: 3");
-		   JMenuItem submarine = new JMenuItem("Submarine: 3");
-		   JMenuItem patrolBoat = new JMenuItem("Patrol Boat: 2");
+	   
+	   return battleField;
+	   
+   }
+   //adds menu bar functions
+   private JMenuBar MenuBar() {
+	   JMenuBar menuBar = new JMenuBar();
+	   //JMenu stuff
+	   JMenu file = new JMenu("File");
+	   JMenu help = new JMenu("Help");
+	   JMenu connect = new JMenu("Connect");
+	   JMenu ships =  new JMenu("Ships");
+	   JMenu stats = new JMenu("Statistics");
+	   
+	   //menu item stuff
+	   JMenuItem about = new JMenuItem("About");
+	   JMenuItem exit = new JMenuItem("Exit");
+	   
+	   JMenuItem howToPlay = new JMenuItem("How to Play");
 
-		   //action listener stuff
-		   exit.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   dispose();
-			   }
-		   });
-		   
-		   //action listener for ships
-		   aircraftCarrier.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   client.getFieldContainer().buttonCount = 0;
-				   client.getFieldContainer().setShipChosen('A', 5);
-				   aircraftCarrier.setEnabled(false);
-			   }
-		   });
-		   battleShip.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   client.getFieldContainer().buttonCount = 0;
-				   client.getFieldContainer().setShipChosen('B', 4);
-				   battleShip.setEnabled(false);
-			   }
-		   });
-		   destroyer.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   client.getFieldContainer().buttonCount = 0;
-				   client.getFieldContainer().setShipChosen('D', 3);
-				   destroyer.setEnabled(false);
-			   }
-		   });
-		   submarine.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   client.getFieldContainer().buttonCount = 0;
-				   client.getFieldContainer().setShipChosen('S', 3);
-				   submarine.setEnabled(false);
-			   }
-		   });
-		   patrolBoat.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   client.getFieldContainer().buttonCount = 0;
-				   client.getFieldContainer().setShipChosen('P', 2);
-				   patrolBoat.setEnabled(false);
-			   }
-		   });
+	   JMenuItem statistics = new JMenuItem("View stats");
+	   
+	   JMenuItem connection = new JMenuItem("Start Connection");
+	  
+	   //ships item stuff
+	   JMenuItem aircraftCarrier = new JMenuItem("Aircraft Carrier: 5");
+	   JMenuItem battleShip = new JMenuItem("Battleship: 4");
+	   JMenuItem destroyer = new JMenuItem("Destroyer: 3");
+	   JMenuItem submarine = new JMenuItem("Submarine: 3");
+	   JMenuItem patrolBoat = new JMenuItem("Patrol Boat: 2");
+
+	   //action listener stuff
+	   exit.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   dispose();
+		   }
+	   });
+	   
+	   //action listener for ships
+	   aircraftCarrier.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('A', 5);
+			   aircraftCarrier.setEnabled(false);
+		   }
+	   });
+	   battleShip.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('B', 4);
+			   battleShip.setEnabled(false);
+		   }
+	   });
+	   destroyer.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('D', 3);
+			   destroyer.setEnabled(false);
+		   }
+	   });
+	   submarine.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('S', 3);
+			   submarine.setEnabled(false);
+		   }
+	   });
+	   patrolBoat.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   clientField.get(1).buttonCount = 0;
+			   clientField.get(1).setShipChosen('P', 2);
+			   patrolBoat.setEnabled(false);
+		   }
+	   });
 	   
 	   //actionlistener for connect
 	  
