@@ -4,6 +4,7 @@ public class Game {
 
 	public static void main(String[] args) {
 		BattleShipClient bsClient = new BattleShipClient("Client");
+		// Prevent display overlap
 		bsClient.setLocationRelativeTo(null);
 		BattleShipServer bsServer = new BattleShipServer("Server");
 		
