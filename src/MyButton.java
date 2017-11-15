@@ -4,9 +4,10 @@ import javax.swing.JButton;
 public class MyButton extends JButton{
 	private char row;
 	private int col;
-	
+	private boolean isOccupied;
 	public MyButton(char r, int c, ImageIcon img) {
 		super(img);
+		isOccupied = false;
 		row = r;
 		col = c+1;
 	}
@@ -31,6 +32,12 @@ public class MyButton extends JButton{
 	}
 	public int getCol() {
 		return col;
+	}
+	public void setOccupied(boolean o) {
+		isOccupied = o;
+	}
+	public boolean getOccupied() {
+		return isOccupied;
 	}
 	
 }
