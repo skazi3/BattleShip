@@ -229,6 +229,8 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  boolean serverContinue;
 	  ServerSocket serverSocket;
 	  JTextField message;
+	  PrintWriter out;
+	  BufferedReader in;
 
 	   // set up GUI
 	   public ConnectionServerListener()
@@ -253,7 +255,6 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      upperPanel.add ( new JLabel ("Message: ", JLabel.LEFT) );
 	      message = new JTextField ("");
 	      message.addActionListener( this );
-	      
 	      upperPanel.add( message);
 	      
 	      sendButton = new JButton( "Send Message" );
@@ -289,16 +290,42 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	    // handle button event
 	    public void actionPerformed( ActionEvent event )
 	    {
-	       if (running == false)
+
+	       if (!running &&
+		           (event.getSource() == sendButton || 
+		            event.getSource() == message ) ) {
+	    	   		doSendMessage();
+	       }
+	       else if (running == false)
 	       {
 	         new ConnectionThread (this);
-	       }
+	         sendButton.setEnabled(true);
+	       } 
 	       else
 	       {
 	         serverContinue = false;
 	         ssButton.setText ("Start Listening");
 	         portInfo.setText (" Not Listening ");
 	       }
+	    }
+	    
+	    public void doSendMessage()
+	    {
+	      try
+	      {
+	            String machineName = machineInfo.getText();
+	            int portNum = Integer.parseInt(portInfo.getText());
+	            Socket echoSocket = new Socket(machineName, portNum );
+	            out = new PrintWriter(echoSocket.getOutputStream(), true);
+	            in = new BufferedReader(new InputStreamReader(
+	                                        echoSocket.getInputStream()));
+	        out.println(message.getText());
+	        history.insert ("From Server: " + in.readLine() + "\n" , 0);
+	      }
+	      catch (IOException e) 
+	      {
+	        history.insert ("Error in processing message ", 0);
+	      }
 	    }
 
 
