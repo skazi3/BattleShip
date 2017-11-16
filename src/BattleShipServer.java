@@ -278,8 +278,8 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      container.add( portInfo );
 
 	      history = new JTextArea ( 10, 40 );
-//	      history.setEditable(false);
-//	      container.add( new JScrollPane(history) );
+	      history.setEditable(false);
+	      container.add( new JScrollPane(history) );
 
 	      setSize( 500, 250 );
 	      setVisible( true );

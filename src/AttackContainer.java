@@ -13,6 +13,7 @@ public class AttackContainer extends Container {
 	public int buttonCount;
 	boolean userAttacked = false;
 	private Coordinates hit;
+	private ConnectionClientListener c;
 	
 
 
@@ -60,6 +61,8 @@ public class AttackContainer extends Container {
 						MyButton b = (MyButton)e.getSource();
 						userAttacked = true;
 						hit = new Coordinates(getRow(b.getRow()), b.getCol());
+						c.doSendMessage();
+			
 						
 					}
 				});
@@ -96,6 +99,9 @@ public class AttackContainer extends Container {
 	public void setShipChosen(char name, int size) {
 		
 		shipSize = size;
+	}
+	public void addConnection(ConnectionClientListener ccl) {
+		c = ccl;
 	}
 	
 

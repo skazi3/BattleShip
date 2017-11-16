@@ -65,12 +65,12 @@ public class BattleShipClient extends JFrame {
 		   c.setLayout(new GridLayout(2, 1, 4, 4));
 
 		   
-		   AttackContainer a = new AttackContainer(0);
-		   FieldContainer f = new FieldContainer(1);
-		   client.setFieldContainer(f);
-		   client.setAttackContainer(a);
-		   c.add(a);
-		   c.add(f);
+		   attackField = new AttackContainer(0);
+		   battleField = new FieldContainer(1);
+		   client.setFieldContainer(battleField);
+		   client.setAttackContainer(attackField);
+		   c.add(attackField);
+		   c.add(battleField);
 		   
 
 		   return c;
@@ -186,7 +186,9 @@ public class BattleShipClient extends JFrame {
 	   
        connection.addActionListener(new ActionListener() {
     	   		public void actionPerformed(ActionEvent e) {
-    	   			new ConnectionClientListener();
+    	   			ConnectionClientListener c = new ConnectionClientListener();
+    	   			attackField.addConnection(c);
+    	   			
     	   		}
        });
       
