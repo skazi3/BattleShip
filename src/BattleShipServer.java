@@ -53,9 +53,7 @@ public class BattleShipServer extends JFrame {
       //west panel should have something else (???)
       container.add(makeGrids(), BorderLayout.WEST);
       container.setBackground(Color.LIGHT_GRAY);
-      
 
-     
       setSize( 325, 680);
       setVisible( true );
 
@@ -66,15 +64,12 @@ public class BattleShipServer extends JFrame {
 	   Container c = new Container();
 	   c.setLayout(new GridLayout(2, 1, 4, 4));
 
-	   
 	   AttackContainer a = new AttackContainer(0);
 	   FieldContainer f = new FieldContainer(1);
 	   client.setAttackContainer(a);
 	   client.setFieldContainer(f);
 	   c.add(a);
 	   c.add(f);
-	   
-
 	   return c;
 	   
    }

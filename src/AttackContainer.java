@@ -11,6 +11,9 @@ public class AttackContainer extends Container {
 	private ArrayList<String> col;
 	private int shipSize = -1;
 	public int buttonCount;
+	boolean userAttacked = false;
+	private Coordinates hit;
+	
 
 
 	public AttackContainer(int no) {
@@ -52,7 +55,11 @@ public class AttackContainer extends Container {
 /*---------------------end checkerboard buttons----------------------------------------------------------*/
 				
 /*---------------------makes actionlistener--------------------------------------------------------------*/
-				
+				coordinates[i][j].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						userAttacked = true;
+					}
+				});
 /*---------------------end actionlistener----------------------------------------------------------------*/
 				
 				coordinates[i][j].setPreferredSize(new Dimension(25, 25));
