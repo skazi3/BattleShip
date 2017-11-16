@@ -57,7 +57,10 @@ public class AttackContainer extends Container {
 /*---------------------makes actionlistener--------------------------------------------------------------*/
 				coordinates[i][j].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						MyButton b = (MyButton)e.getSource();
 						userAttacked = true;
+						hit = new Coordinates(getRow(b.getRow()), b.getCol());
+						
 					}
 				});
 /*---------------------end actionlistener----------------------------------------------------------------*/
