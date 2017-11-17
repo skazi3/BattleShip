@@ -278,8 +278,8 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      container.add( portInfo );
 
 	      history = new JTextArea ( 10, 40 );
-//	      history.setEditable(false);
-//	      container.add( new JScrollPane(history) );
+	      history.setEditable(false);
+	      container.add( new JScrollPane(history) );
 
 	      setSize( 500, 250 );
 	      setVisible( true );
@@ -313,19 +313,36 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	    {
 	      try
 	      {
-	            String machineName = machineInfo.getText();
-	            int portNum = Integer.parseInt(portInfo.getText());
-	            Socket echoSocket = new Socket(machineName, portNum );
-	            out = new PrintWriter(echoSocket.getOutputStream(), true);
-	            in = new BufferedReader(new InputStreamReader(
-	                                        echoSocket.getInputStream()));
-	        out.println(message.getText());
-	        history.insert ("From Server: " + in.readLine() + "\n" , 0);
+	           //String machineName = machineInfo.getText();
+	           int portNum = serverSocket.getLocalPort();
+           ServerSocket serverSocket = new ServerSocket(portNum);
+           
+	           Socket clientSocket = serverSocket.accept();
+	           
+//	           out = new PrintWriter(clientSocket.getOutputStream(), true);
+//	           out.println(message.getText());
+
+	           
+               in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
+	           
+	       	ObjectOutputStream out = new ObjectOutputStream(
+					 clientSocket.getOutputStream()); 
+//	       	ObjectInputStream in = new ObjectInputStream( 
+//					 clientSocket.getInputStream()); 
+	          
+               String line = in.readLine();
+               System.out.println(message.getText());
+               
+           	out.writeObject(line); 
+           	out.flush();
+	       
+//	       history.insert ("From Server: " + line + "\n" , 0);
 	      }
 	      catch (IOException e) 
 	      {
-	        history.insert ("Error in processing message ", 0);
+	        history.insert ("Error in processing message\n ", 0);
 	      }
+	      
 	    }
 
 
