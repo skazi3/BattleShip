@@ -306,6 +306,12 @@ public class BattleShipClient extends JFrame {
 		      }
 		    }
 		    
+		    public void doSendCoords(char c, int y)
+		    {
+		    	out.print(c);
+				out.println(y);
+		    }
+		    
 		    public void doManageConnection()
 		    {
 		      if (connected == false)

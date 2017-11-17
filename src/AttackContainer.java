@@ -61,7 +61,7 @@ public class AttackContainer extends Container {
 						MyButton b = (MyButton)e.getSource();
 						userAttacked = true;
 						hit = new Coordinates(getRow(b.getRow()), b.getCol());
-						c.doSendMessage();
+						c.doSendCoords(hit.getX(), hit.getY());
 			
 						
 					}
