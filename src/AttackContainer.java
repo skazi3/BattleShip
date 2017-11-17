@@ -59,6 +59,8 @@ public class AttackContainer extends Container {
 				coordinates[i][j].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						MyButton b = (MyButton)e.getSource();
+						b.setBackground(Color.black);
+						b.setEnabled(false);
 						userAttacked = true;
 						c.doSendCoords(b.getRow(), b.getCol());
 			

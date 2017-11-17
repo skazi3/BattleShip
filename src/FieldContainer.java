@@ -144,7 +144,7 @@ public class FieldContainer extends Container {
 		                    java.awt.Image.SCALE_SMOOTH))));
 		 if(coordinates[x][y].getOccupied())
 			 coordinates[x][y].setIcon(iconHit);
-		 else
+		 else if(!coordinates[x][y].getOccupied())
 			 coordinates[x][y].setIcon(iconMiss);
 		 
 	}
