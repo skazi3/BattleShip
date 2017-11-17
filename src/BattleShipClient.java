@@ -148,6 +148,11 @@ public class BattleShipClient extends JFrame {
 		   });
 	   
 	   //actionlistener for connect
+		   connection.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+				   ConnectionClientListener ccl = new ConnectionClientListener();
+			   }
+		   });
 	  
 	   
 	   //add to menu stuff
@@ -358,10 +363,67 @@ public class BattleShipClient extends JFrame {
 		        {
 		            history.insert ("Error in closing down Socket ", 0);
 		        }
-		      }
-
-		        
+		      }   
 		    }
 	  }
+ class CommunicationServerThread extends Thread
+	{ 
+	 //private boolean serverContinue = true;
+	 private Socket serverSocket;
+	 private ConnectionClientListener gui;
+	 private FieldContainer battleField;
+
+	 public CommunicationServerThread (Socket clientSoc, ConnectionClientListener ec3, FieldContainer bf)
+	   {
+		 serverSocket = clientSoc;
+	    gui = ec3;
+	    battleField = bf;
+	    gui.history.insert ("Communicating with Port" + serverSocket.getLocalPort()+"\n", 0);
+	    start();
+	   }
+
+	 public void run()
+	   {
+	    System.out.println ("New Communication Thread Started");
+
+	    try { 
+	         PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), 
+	                                      true); 
+	         BufferedReader in = new BufferedReader( 
+	                 new InputStreamReader( serverSocket.getInputStream())); 
+
+	         String inputLine; 
+
+	         while ((inputLine = in.readLine()) != null) 
+	             { 
+	              System.out.println ("Server: " + inputLine);
+	              char[] clientHit = inputLine.toCharArray();
+	              battleField.sendAttack(clientHit);
+	              
+	        
+	              
+	              
+	              
+//------------------------FIRE AT SERVER BOARD HERE USING INPUTLINE----------------------------//
+	              
+	              gui.history.insert (inputLine+"\n", 0);
+	              
+	              out.println(inputLine); 
+
+	              if (inputLine.equals("Bye.")) 
+	                  break; 	               
+	             } 
+
+	         out.close(); 
+	         in.close(); 
+	         serverSocket.close(); 
+	        } 
+	    catch (IOException e) 
+	        { 
+	         System.err.println("Problem with Communication Server");
+	         //System.exit(1); 
+	        } 
+	    }
+	} 
 
 
