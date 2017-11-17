@@ -232,6 +232,9 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  PrintWriter out;
 	  BufferedReader in;
 
+	  
+	  
+	  
 	   // set up GUI
 	   public ConnectionServerListener()
 	   {
@@ -309,49 +312,65 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	       }
 	    }
 	    
+
+	    
 	    public void doSendMessage()
 	    {
 	      try
 	      {
 	           //String machineName = machineInfo.getText();
 	           int portNum = serverSocket.getLocalPort();
-	           System.out.println(portNum);
-	           ServerSocket serverSocket = new ServerSocket(portNum);
-		    //  System.out.print("In try of dosendmessage");
+//	           DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+//	           DataInputStream in = new DataInputStream(socket.getInputStream());
+	           //System.out.println("4444444444444");
+	           
+	           ServerSocket sSocket = new ServerSocket(portNum); 
+	           System.out.print("77777777");
+	           
+		    
 
-	           Socket clientSocket = serverSocket.accept();
+	           Socket clientSocket = sSocket.accept();
+	           System.out.print("00000000");
 	           
 	           //---------------------------------------
-	           out = new PrintWriter(clientSocket.getOutputStream(), true);
 	           in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
+	           System.out.print("11111111");
+	           out = new PrintWriter(clientSocket.getOutputStream(), true);
+	           System.out.print("In try of dosendmessage");
 
 	           out.println(message.getText());
+	           
+	           
 		       history.insert ("From Server: " + in.readLine() + "\n" , 0);
+		       System.out.println(portNum);
 
 
-	           
-	           
-              // ObjectOutputStream out = new ObjectOutputStream(
-			//		clientSocket.getOutputStream()); 
-              // ObjectInputStream in = new ObjectInputStream( 
-				//	 clientSocket.getInputStream()); 
+//               ObjectOutputStream out = new ObjectOutputStream(
+//					clientSocket.getOutputStream()); 
+//               ObjectInputStream in = new ObjectInputStream( 
+//					 clientSocket.getInputStream()); 
 	       	//	strHolder(in)
               // String line = ;
-               System.out.println(message.getText());
+//               System.out.println(message.getText());
                
           // 	out.writeObject(line); 
           // 	out.flush();
 	       
 //	       history.insert ("From Server: " + line + "\n" , 0);
+		       
+		  sSocket.close();
+		 	      
 	      }
 	      catch (IOException e) 
 	      {
 	        history.insert ("Error in processing message\n ", 0);
 	      }
-	      
+	      catch(Exception e) {
+	    	  
+	      }
 	    }
 
-
+	    
 	 } // end class EchoServer3
 
 
