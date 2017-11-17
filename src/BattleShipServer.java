@@ -64,12 +64,13 @@ public class BattleShipServer extends JFrame {
 	   Container c = new Container();
 	   c.setLayout(new GridLayout(2, 1, 4, 4));
 
-	   AttackContainer a = new AttackContainer(0);
-	   FieldContainer f = new FieldContainer(1);
-	   client.setAttackContainer(a);
-	   client.setFieldContainer(f);
-	   c.add(a);
-	   c.add(f);
+	   attackField = new AttackContainer(0);
+	   battleField = new FieldContainer(1);
+	   client.setFieldContainer(battleField);
+	   client.setAttackContainer(attackField);
+	   c.add(attackField);
+	   c.add(battleField);
+	   
 	   return c;
 	   
    }
@@ -148,7 +149,7 @@ public class BattleShipServer extends JFrame {
 	   //actionlistener for connect	
 	   connection.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   new ConnectionServerListener();
+			   ConnectionServerListener s = new ConnectionServerListener(battleField);
 		   }
 	   });
 	   
@@ -224,6 +225,7 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  JTextArea history;
 	  JButton sendButton;
 	  private boolean running;
+	  private FieldContainer fc;
 
 	  // Network Items
 	  boolean serverContinue;
@@ -233,10 +235,11 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	  BufferedReader in;
 
 	   // set up GUI
-	   public ConnectionServerListener()
+	   public ConnectionServerListener(FieldContainer f)
 	   {
 	      super( "Connection Server" );
 
+	      fc = f;
 	      // get content pane and set its layout
 	      Container container = getContentPane();
 	      container.setLayout( new FlowLayout() );
@@ -298,7 +301,7 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	       }
 	       else if (running == false)
 	       {
-	         new ConnectionThread (this);
+	         new ConnectionThread (this, fc);
 	         sendButton.setEnabled(true);
 	       } 
 	       else
@@ -319,8 +322,8 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	            out = new PrintWriter(echoSocket.getOutputStream(), true);
 	            in = new BufferedReader(new InputStreamReader(
 	                                        echoSocket.getInputStream()));
-	        out.println(message.getText());
-	        history.insert ("From Server: " + in.readLine() + "\n" , 0);
+		        out.println(message.getText());
+		        history.insert ("From Server: " + in.readLine() + "\n" , 0);
 	      }
 	      catch (IOException e) 
 	      {
@@ -335,10 +338,12 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	class ConnectionThread extends Thread
 	 {
 		ConnectionServerListener gui;
+		private FieldContainer fc;
 	   
-	   public ConnectionThread (ConnectionServerListener es3)
+	   public ConnectionThread (ConnectionServerListener es3, FieldContainer f)
 	   {
 	     gui = es3;
+	     fc = f;
 	     start();
 	   }
 	   
@@ -356,7 +361,7 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	         {
 	           System.out.println ("Waiting for Connection");
 	           gui.ssButton.setText("Stop Listening");
-	           new CommunicationThread (gui.serverSocket.accept(), gui); 
+	           new CommunicationThread (gui.serverSocket.accept(), gui, fc); 
 	         }
 	       } 
 	       catch (IOException e) 
@@ -390,13 +395,15 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	 //private boolean serverContinue = true;
 	 private Socket clientSocket;
 	 private ConnectionServerListener gui;
+	 private FieldContainer battleField;
 
 
 
-	 public CommunicationThread (Socket clientSoc, ConnectionServerListener ec3)
+	 public CommunicationThread (Socket clientSoc, ConnectionServerListener ec3, FieldContainer bf)
 	   {
 	    clientSocket = clientSoc;
 	    gui = ec3;
+	    battleField = bf;
 	    gui.history.insert ("Communicating with Port" + clientSocket.getLocalPort()+"\n", 0);
 	    start();
 	   }
@@ -415,12 +422,18 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 
 	         while ((inputLine = in.readLine()) != null) 
 	             { 
-	              System.out.println ("Server: " + inputLine); 
+	              System.out.println ("Server: " + inputLine);
+	              char[] clientHit = inputLine.toCharArray();
+	              battleField.sendAttack(clientHit);
+	              
+	        
+	              
+	              
+	              
 //------------------------FIRE AT SERVER BOARD HERE USING INPUTLINE----------------------------//
 	              
-	              
-	              
 	              gui.history.insert (inputLine+"\n", 0);
+	              
 	              out.println(inputLine); 
 
 	              if (inputLine.equals("Bye.")) 

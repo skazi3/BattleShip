@@ -18,7 +18,7 @@ public class AttackContainer extends Container {
 
 
 	public AttackContainer(int no) {
-
+		hit = new Coordinates('k', 0);
 		coordinates = new JButton[10][10];
 		initializeCol();
 		setLayout(new BorderLayout());
@@ -60,8 +60,7 @@ public class AttackContainer extends Container {
 					public void actionPerformed(ActionEvent e) {
 						MyButton b = (MyButton)e.getSource();
 						userAttacked = true;
-						hit = new Coordinates(getRow(b.getRow()), b.getCol());
-						c.doSendCoords(hit.getX(), hit.getY());
+						c.doSendCoords(b.getRow(), b.getCol());
 			
 						
 					}

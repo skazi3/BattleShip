@@ -10,13 +10,15 @@ public class MyButton extends JButton{
 		super(img);
 		isOccupied = false;
 		row = r;
-		col = c+1;
+		col = c;
 	}
 	public MyButton(ImageIcon img) {
 		super(img);
 	}
-	
-	public int getRow() {
+	public char getRow() {
+		return row;
+	}
+	public int getRowInt() {
 		switch(row) {
 		case 'A': return 0;
 		case 'B': return 1;

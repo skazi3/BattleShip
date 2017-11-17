@@ -308,8 +308,13 @@ public class BattleShipClient extends JFrame {
 		    
 		    public void doSendCoords(char c, int y)
 		    {
-		    	out.print(c);
-				out.println(y);
+		    		String newC = Character.toString(c);
+		    		String newY = Integer.toString(y);
+		    		System.out.println("newC+newy: "+ newC + "," + newY);
+		    		String attack = newC + newY;
+		    		out.println(attack);
+		    		
+	
 		    }
 		    
 		    public void doManageConnection()

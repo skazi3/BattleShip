@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 public class FieldContainer extends Container {
-	private JButton[][] coordinates;
+	private MyButton[][] coordinates;
 	private JLabel row = new JLabel("         A      B      C     D     E      F    G     H     I      J ");
 	private ArrayList<String> col;
 	private int shipSize = -1;
@@ -17,10 +17,11 @@ public class FieldContainer extends Container {
 	private Icon img;
 	private JButton shipImage;
 	private ArrayList<MyButton> ships;
+	private Coordinates hit;
 
 	public FieldContainer(int no) {
 
-		coordinates = new JButton[10][10];
+		coordinates = new MyButton[10][10];
 		initializeCol();
 		setLayout(new BorderLayout());
 		add(row, BorderLayout.NORTH);
@@ -127,6 +128,25 @@ public class FieldContainer extends Container {
 	public void setShipChosen(char name, int size) {
 		
 		shipSize = size;
+	}
+	public void sendAttack(char[] coordinate) {
+		 hit = new Coordinates(coordinate[0],Integer.parseInt(Character.toString(coordinate[1])));
+		 int x = hit.getRow();
+		 int y = hit.getY();
+		 
+		 ImageIcon iconHit = new ImageIcon(((new ImageIcon(
+		            "images/batt103.gif").getImage()
+		            .getScaledInstance(25, 25,
+		                    java.awt.Image.SCALE_SMOOTH))));
+		 ImageIcon iconMiss = new ImageIcon(((new ImageIcon(
+		            "images/batt102.gif").getImage()
+		            .getScaledInstance(25, 25,
+		                    java.awt.Image.SCALE_SMOOTH))));
+		 if(coordinates[x][y].getOccupied())
+			 coordinates[x][y].setIcon(iconHit);
+		 else
+			 coordinates[x][y].setIcon(iconMiss);
+		 
 	}
 	
 
