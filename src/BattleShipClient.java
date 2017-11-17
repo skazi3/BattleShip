@@ -147,12 +147,7 @@ public class BattleShipClient extends JFrame {
 			   }
 		   });
 	   
-	   //actionlistener for connect
-		   connection.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-				   ConnectionClientListener ccl = new ConnectionClientListener();
-			   }
-		   });
+
 	  
 	   
 	   //add to menu stuff
@@ -191,7 +186,7 @@ public class BattleShipClient extends JFrame {
 	   
        connection.addActionListener(new ActionListener() {
     	   		public void actionPerformed(ActionEvent e) {
-    	   			ConnectionClientListener c = new ConnectionClientListener();
+    	   			ConnectionClientListener c = new ConnectionClientListener(battleField);
     	   			attackField.addConnection(c);
     	   			
     	   		}
@@ -227,6 +222,7 @@ public class BattleShipClient extends JFrame {
 		  JTextField portInfo;
 		  JTextField message;
 		  JTextArea history;
+		  FieldContainer battleField;
 
 		  // Network Items
 		  boolean connected;
@@ -235,9 +231,10 @@ public class BattleShipClient extends JFrame {
 		  BufferedReader in;
 
 		   // set up GUI
-		   public ConnectionClientListener()
+		   public ConnectionClientListener(FieldContainer fc)
 		   {
 			   super("Client connection");
+			   battleField = fc;
 		      // get content pane and set its layout
 		      Container container = getContentPane();
 		      container.setLayout (new BorderLayout ());
@@ -317,10 +314,8 @@ public class BattleShipClient extends JFrame {
 		    		System.out.println("newC+newy: "+ newC + "," + newY);
 		    		String attack = newC + newY;
 		    		out.println(attack);
-		    		
-	
-		    }
-		    
+
+		    } 
 		    public void doManageConnection()
 		    {
 		      if (connected == false)
@@ -337,6 +332,7 @@ public class BattleShipClient extends JFrame {
 		            sendButton.setEnabled(true);
 		            connected = true;
 		            connectButton.setText("Disconnect from Server");
+		            new CommunicationClientThread(echoSocket,this, battleField);
 		        } catch (NumberFormatException e) {
 		            history.insert ( "Server Port must be an integer\n", 0);
 		        } catch (UnknownHostException e) {
@@ -365,14 +361,14 @@ public class BattleShipClient extends JFrame {
 		      }   
 		    }
 	  }
- class CommunicationServerThread extends Thread
+ class CommunicationClientThread extends Thread
 	{ 
 	 //private boolean serverContinue = true;
 	 private Socket serverSocket;
 	 private ConnectionClientListener gui;
 	 private FieldContainer battleField;
 
-	 public CommunicationServerThread (Socket clientSoc, ConnectionClientListener ec3, FieldContainer bf)
+	 public CommunicationClientThread (Socket clientSoc, ConnectionClientListener ec3, FieldContainer bf)
 	   {
 		 serverSocket = clientSoc;
 	    gui = ec3;

@@ -329,6 +329,8 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      {
 	        history.insert ("Error in processing message ", 0);
 	      }
+	      
+	      
 	    }
 
 
