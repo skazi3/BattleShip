@@ -18,6 +18,8 @@ public class FieldContainer extends Container {
 	private JButton shipImage;
 	private ArrayList<MyButton> ships;
 	private Coordinates hit;
+	private int hits = 0;
+	private int misses = 0;
 
 	public FieldContainer(int no) {
 
@@ -142,11 +144,21 @@ public class FieldContainer extends Container {
 		            "images/batt102.gif").getImage()
 		            .getScaledInstance(25, 25,
 		                    java.awt.Image.SCALE_SMOOTH))));
-		 if(coordinates[x][y].getOccupied())
+		 if(coordinates[x][y].getOccupied()) {
 			 coordinates[x][y].setIcon(iconHit);
-		 else if(!coordinates[x][y].getOccupied())
+			 hits++;
+		 }
+		 else if(!coordinates[x][y].getOccupied()) {
 			 coordinates[x][y].setIcon(iconMiss);
+			 misses++;
+		 }
 		 
+	}
+	public int getHits() {
+		return hits;
+	}
+	public int getMisses() {
+		return misses;
 	}
 	
 
