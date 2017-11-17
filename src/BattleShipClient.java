@@ -332,7 +332,7 @@ public class BattleShipClient extends JFrame {
 		            sendButton.setEnabled(true);
 		            connected = true;
 		            connectButton.setText("Disconnect from Server");
-		            new CommunicationClientThread(echoSocket,this, battleField);
+		           // new CommunicationClientThread(echoSocket,this, battleField);
 		        } catch (NumberFormatException e) {
 		            history.insert ( "Server Port must be an integer\n", 0);
 		        } catch (UnknownHostException e) {
@@ -361,6 +361,7 @@ public class BattleShipClient extends JFrame {
 		      }   
 		    }
 	  }
+ /*
  class CommunicationClientThread extends Thread
 	{ 
 	 //private boolean serverContinue = true;
@@ -417,4 +418,4 @@ public class BattleShipClient extends JFrame {
 	    }
 	} 
 
-
+*/
