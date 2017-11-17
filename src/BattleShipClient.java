@@ -216,8 +216,7 @@ public class BattleShipClient extends JFrame {
 	   menuBar.add(ships);
 	   menuBar.add(connect);
 	   menuBar.add(stats);
-	   
-	   
+	     
 	   return menuBar;
    }
 }
@@ -398,11 +397,7 @@ public class BattleShipClient extends JFrame {
 	             { 
 	              System.out.println ("Server: " + inputLine);
 	              char[] clientHit = inputLine.toCharArray();
-	              battleField.sendAttack(clientHit);
-	              
-	        
-	              
-	              
+	              battleField.sendAttack(clientHit);  
 	              
 //------------------------FIRE AT SERVER BOARD HERE USING INPUTLINE----------------------------//
 	              
