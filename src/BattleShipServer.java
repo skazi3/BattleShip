@@ -315,26 +315,32 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	      {
 	           //String machineName = machineInfo.getText();
 	           int portNum = serverSocket.getLocalPort();
-           ServerSocket serverSocket = new ServerSocket(portNum);
-           
+	           System.out.println(portNum);
+	           ServerSocket serverSocket = new ServerSocket(portNum);
+		    //  System.out.print("In try of dosendmessage");
+
 	           Socket clientSocket = serverSocket.accept();
 	           
-//	           out = new PrintWriter(clientSocket.getOutputStream(), true);
-//	           out.println(message.getText());
+	           //---------------------------------------
+	           out = new PrintWriter(clientSocket.getOutputStream(), true);
+	           in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
+
+	           out.println(message.getText());
+		       history.insert ("From Server: " + in.readLine() + "\n" , 0);
+
 
 	           
-               in = new BufferedReader(new InputStreamReader( clientSocket.getInputStream()));
 	           
-	       	ObjectOutputStream out = new ObjectOutputStream(
-					 clientSocket.getOutputStream()); 
-//	       	ObjectInputStream in = new ObjectInputStream( 
-//					 clientSocket.getInputStream()); 
-	          
-               String line = in.readLine();
+              // ObjectOutputStream out = new ObjectOutputStream(
+			//		clientSocket.getOutputStream()); 
+              // ObjectInputStream in = new ObjectInputStream( 
+				//	 clientSocket.getInputStream()); 
+	       	//	strHolder(in)
+              // String line = ;
                System.out.println(message.getText());
                
-           	out.writeObject(line); 
-           	out.flush();
+          // 	out.writeObject(line); 
+          // 	out.flush();
 	       
 //	       history.insert ("From Server: " + line + "\n" , 0);
 	      }
@@ -458,4 +464,5 @@ class ConnectionServerListener extends JFrame implements ActionListener{
 	        } 
 	    }
 	} 
+	
 

@@ -296,11 +296,11 @@ public class BattleShipClient extends JFrame {
 		      try
 		      {
 		        out.println(message.getText());
-		        history.insert ("From Server: " + in.readLine() + "\n" , 0);
+		        history.insert ("From Client: " + in.readLine() + "\n" , 0);
 		      }
 		      catch (IOException e) 
 		      {
-		        history.insert ("Error in processing message ", 0);
+		        history.insert ("Error in processing message (from client) ", 0);
 		      }
 		    }
 		    
